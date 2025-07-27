@@ -25,6 +25,7 @@ const AppWrapper = styled.div`
   margin: 0 auto;
   display: flex;
   min-height: 100%;
+  overflow-x: hidden;
   // padding: 0 16px;
   flex-direction: column;
 `;
@@ -33,15 +34,16 @@ export default function App() {
   return (
     <AppWrapper>
       <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
+        // titleTemplate="%s - Vinfast An Nhiên"
+        titleTemplate="Vinfast An Nhiên"
+        defaultTitle="Vinfast An Nhiên"
       >
-        <meta name="description" content="A React.js Boilerplate application" />
+        <meta name="description" content="Vinfast An Nhiên" />
       </Helmet>
       <Header />
       <div style={{ margin: '2rem' }} />
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/home" component={HomePage} />
         <Route path="/features" component={FeaturePage} />
         <Route path="/introduce" component={Introduce} />
         <Route path="" component={NotFoundPage} />

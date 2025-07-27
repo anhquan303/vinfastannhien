@@ -1,0 +1,16 @@
+export const showroomList = [
+  'Showroom 1: 85 Ô Chợ Dừa, Đống Đa, Hà Nội',
+  'Showroom 2: 109 Đại La, Hai Bà Trưng, Hà Nội',
+  'Showroom 3: 09 Ngọc Hồi, Hoàng Liệt, Hoàng Mai, Hà Nội',
+  'Showroom 4: 281 Lại Xá, Kim Chung, Hoài Đức, Hà Nội',
+  'Showroom 5: 204 Đường An Dương Vương, Thị Trấn Chờ, Yên Phong, Bắc Ninh',
+  'Showroom 6: 460 Nguyễn Văn Luông, Quận 6, Hồ Chí Minh',
+  'Showroom 7: 626 Tôn Đức Thắng, Liên Chiểu, Đà Nẵng',
+  'Showroom 8: 69 Hoàng Hoa Thám, Thanh Khê, Đà Nẵng',
+  'Showroom 9: 15 Lê Hồng Phong, Phước Tân, Nha Trang, Khánh Hòa',
+  'Showroom 10: 4 Cao Thắng, Cao Thắng, Hạ Long, Quảng Ninh',
+  'Showroom 12: 85 Phố Nỉ, Trung Dã, Sóc Sơn, Hà Nội',
+  'Showroom Xưởng Dịch Vụ 13: 111 Đại La, Hai Bà Trưng, Hà Nội',
+  'Showroom Xưởng Dịch Vụ 14: 1H Trần Quang Diệu, Đống Đa, Hà Nội',
+  'Showroom Xưởng Dịch Vụ 15: 116 Đống Các, Đống Đa, Hà Nội',
+];

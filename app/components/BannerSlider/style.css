@@ -27,7 +27,8 @@
 .slide-content {
   position: absolute;
   top: 50%;
-  left: 5%;
+  right: 5%;
+  left: auto;
   transform: translateY(-50%);
   text-align: left;
   color: white;
@@ -46,9 +47,18 @@
 }
 
 .btn-slide {
-  background-color: #ff3366;
+  background-color: #F5167E;
   padding: 12px 24px;
   color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: bold;
+}
+
+.btn-slide-1 {
+  background-color: #FFF;
+  padding: 12px 24px;
+  color: #F5167E;
   text-decoration: none;
   border-radius: 25px;
   font-weight: bold;

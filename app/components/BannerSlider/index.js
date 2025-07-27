@@ -13,23 +13,26 @@ import { FormattedMessage } from 'react-intl';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import xevinImage from 'images/xevin.jpg';
-import messages from './messages';
 import './style.css';
+import { Grid, Typography, Stack } from '@mui/material';
+import anhbia1 from '../../images/anhbia1.png';
+import anhbia2 from '../../images/anhbia2.png';
 
 const sliderData = [
   {
-    image: '/images/xevin.jpg',
+    image: anhbia1,
     title: 'VinFast Motio',
     description: 'Lựa chọn hoàn hảo cho học sinh',
     buttonText: 'Khám phá ngay',
+    buttonText1: 'Xem thêm các sản phẩm khác',
     buttonLink: '#',
   },
   {
-    image: '/images/slide2.jpg',
+    image: anhbia2,
     title: 'Thiết kế hiện đại',
     description: 'Thân thiện với môi trường, năng động với giới trẻ',
     buttonText: 'Xem chi tiết',
+    buttonText1: 'Xem thêm các sản phẩm khác',
     buttonLink: '#',
   },
 ];
@@ -52,7 +55,7 @@ function BannerSlider() {
           <div
             className="slide-background"
             style={{
-              backgroundImage: `url(${xevinImage})`,
+              backgroundImage: `url(${item.image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
@@ -61,11 +64,50 @@ function BannerSlider() {
             }}
           >
             <div className="slide-content">
-              <h1>{item.title}</h1>
-              <p>{item.description}</p>
-              <a href={item.buttonLink} className="btn-slide">
-                {item.buttonText}
-              </a>
+              <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems={{ xs: 'flex-start', md: 'center' }}
+                sx={{
+                  textAlign: { xs: 'left', md: 'center' },
+                  px: { xs: 2, md: 10, lg: 0 },
+                  py: { xs: 4, md: 8, lg: 0 },
+                }}
+              >
+                <Grid item>
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    fontWeight="bold"
+                    gutterBottom
+                  >
+                    {item.title}
+                  </Typography>
+                </Grid>
+
+                <Grid item>
+                  <Typography variant="body1" mb={4}>
+                    {item.description}
+                  </Typography>
+                </Grid>
+
+                <Grid item>
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    spacing={2}
+                    justifyContent={{ xs: 'flex-start', md: 'center' }}
+                    alignItems="center"
+                  >
+                    <a href={item.buttonLink} className="btn-slide">
+                      {item.buttonText}
+                    </a>
+                    <a href={item.buttonLink} className="btn-slide-1">
+                      {item.buttonText1}
+                    </a>
+                  </Stack>
+                </Grid>
+              </Grid>
             </div>
           </div>
         </div>

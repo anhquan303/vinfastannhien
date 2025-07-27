@@ -14,13 +14,8 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import messages from './messages';
-import Banner from './banner.jpg';
-import HeaderLink from './HeaderLink';
-import NavBar from './NavBar';
-import Img from './Img';
-import A from './A';
+import { NavLink, Link } from 'react-router-dom';
+import logo from '../../images/logo.png';
 
 function Header(props) {
   const { window } = props;
@@ -28,7 +23,7 @@ function Header(props) {
   const navItems = [
     {
       name: 'Trang chủ',
-      href: '/',
+      href: '/home',
     },
     {
       name: 'Giới thiệu',
@@ -36,15 +31,15 @@ function Header(props) {
     },
     {
       name: 'Sản phẩm',
-      href: '/',
+      href: '/product',
     },
     {
       name: 'Tin tức',
-      href: '/',
+      href: '/news',
     },
     {
       name: 'Giỏ hàng',
-      href: '/',
+      href: '/cart',
     },
   ];
 
@@ -57,19 +52,46 @@ function Header(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        <Link to="/home" style={{ textDecoration: 'none' }}>
+          <Box
+            component="img"
+            src={logo}
+            alt="logo"
+            sx={{ height: { xs: 150, sm: 200 } }}
+          />
+        </Link>
       </Typography>
       <Divider />
       <List>
         {navItems.map(item => (
           <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              {/* <ListItemText primary={item} /> */}
-              <HeaderLink to={item.href}>
+            <ListItemButton
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              {/* <HeaderLink to={item.href}>
                 <ListItemText style={{ color: '#6E6565' }}>
                   {item.name}
                 </ListItemText>
-              </HeaderLink>
+              </HeaderLink> */}
+              <Button
+                key={item.href}
+                component={NavLink}
+                to={item.href}
+                sx={{
+                  color: '#6E6565',
+                  fontSize: '16px',
+                  textTransform: 'uppercase',
+                  '&.active': {
+                    color: '#F44336',
+                    fontWeight: 'bold',
+                  },
+                }}
+              >
+                {item.name}
+              </Button>
             </ListItemButton>
           </ListItem>
         ))}
@@ -99,7 +121,7 @@ function Header(props) {
         <AppBar component="nav" style={{ backgroundColor: '#fff' }}>
           <Toolbar>
             <IconButton
-              color="inherit"
+              color="#000"
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
@@ -113,16 +135,32 @@ function Header(props) {
               color="black"
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
-              Logo
+              <Link to="/home" style={{ textDecoration: 'none' }}>
+                <Box
+                  component="img"
+                  src={logo}
+                  alt="logo"
+                  sx={{ height: { xs: 50, sm: 70 } }}
+                />
+              </Link>
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map(item => (
-                <Button key={item} sx={{ color: '#fff' }}>
-                  <HeaderLink to={item.href}>
-                    <span style={{ color: '#6E6565', fontSize: '16px' }}>
-                      {item.name}
-                    </span>
-                  </HeaderLink>
+                <Button
+                  key={item.href}
+                  component={NavLink}
+                  to={item.href}
+                  sx={{
+                    color: '#6E6565',
+                    fontSize: '16px',
+                    textTransform: 'uppercase',
+                    '&.active': {
+                      color: '#F44336',
+                      fontWeight: 'bold',
+                    },
+                  }}
+                >
+                  {item.name}
                 </Button>
               ))}
             </Box>
