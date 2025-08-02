@@ -1,0 +1,76 @@
+.fixed-hotline {
+  position: fixed;
+  bottom: 30px;
+  left: 20px;
+  background-color: #2BBC12;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  text-decoration: none;
+}
+
+.fixed-hotline a {
+  color: white;
+  text-decoration: none;
+}
+
+.fixed-social {
+  position: fixed;
+  bottom: 120px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1000;
+}
+
+.fixed-social img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  background-color: white;
+  padding: 6px;
+}
+
+.scroll-top-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  background-color: #F5167E;
+  color: white;
+  font-size: 24px;
+  border: none;
+  border-radius: 50%; /* Quan trọng: giúp nút tròn */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-top-btn.show {
+  opacity: 1;
+}
+
+.social-icon {
+  font-size: 40px;
+  background-color: white;
+  color: #1877f2; /* Facebook hoặc chỉnh theo mạng xã hội */
+  padding: 6px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+}
+.social-icon:hover {
+  transform: scale(1.1);
+}

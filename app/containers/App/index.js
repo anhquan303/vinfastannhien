@@ -6,7 +6,7 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
@@ -19,6 +19,16 @@ import Header from 'components/Header';
 import Footer from 'components/Footer';
 
 import GlobalStyle from '../../global-styles';
+import { Showroom } from '../Showroom';
+import { News } from '../News';
+import { Products } from '../Products';
+import Detail from '../Products/component/Detail';
+import './style.css';
+import { FaFacebookF } from 'react-icons/fa';
+import { SiZalo } from 'react-icons/si';
+import { FaArrowUp } from 'react-icons/fa';
+import { Cart } from '../Cart';
+import { Payment } from '../Payment';
 
 const AppWrapper = styled.div`
   // max-width: calc(768px + 16px * 2);
@@ -31,6 +41,20 @@ const AppWrapper = styled.div`
 `;
 
 export default function App() {
+  const [showScroll, setShowScroll] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setShowScroll(window.scrollY > 200);
+    };
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <AppWrapper>
       <Helmet
@@ -46,9 +70,55 @@ export default function App() {
         <Route exact path="/home" component={HomePage} />
         <Route path="/features" component={FeaturePage} />
         <Route path="/introduce" component={Introduce} />
+        <Route path="/showroom" component={Showroom} />
+        <Route path="/product" component={Products} />
+        <Route path="/products/:slug" component={Detail} />
+        <Route path="/news" component={News} />
+        <Route path="/cart" component={Cart} />
+        <Route path="/payment" component={Payment} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />
+
+      {/* Hotline bên trái */}
+      <div className="fixed-hotline">
+        <a href="tel:0988062969">Hotline: 0988062969</a>
+      </div>
+
+      {/* Mạng xã hội bên phải */}
+      <div className="fixed-social">
+        <a
+          href="https://zalo.me"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Zalo"
+        >
+          <SiZalo className="social-icon" />
+        </a>
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Facebook"
+        >
+          <FaFacebookF className="social-icon" />
+        </a>
+      </div>
+
+      {/* <button
+        className={`scroll-top-btn ${showScroll ? 'show' : ''}`}
+        onClick={scrollToTop}
+        title="Lên đầu trang"
+      >
+        ↑
+      </button> */}
+      <button
+        className={`scroll-top-btn ${showScroll ? 'show' : ''}`}
+        onClick={scrollToTop}
+        title="Lên đầu trang"
+      >
+        <FaArrowUp />
+      </button>
       <GlobalStyle />
     </AppWrapper>
   );

@@ -1,10 +1,32 @@
 .slide-wrapper {
   width: 100vw;
-  height: 500px;
-  background-color: red;
+  height: 550px;
+  /* background-color: red; */
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.slick-dots {
+  position: absolute;
+  bottom: 20px;          
+  width: 100%;
+  display: flex !important;
+  justify-content: center;
+  z-index: 2;            
+}
+
+.slick-dots li button:before {
+  font-size: 12px;          /* Kích thước chấm */
+  color: #FFA7D0;             /* ✅ Màu chấm tròn thường */
+  opacity: 0.5;
+}
+
+/* Màu của chấm đang active */
+.slick-dots li.slick-active button:before {
+  color: #FF499E;           /* ✅ Màu chấm đang chọn */
+  opacity: 1;
 }
 
 .slide-background {
@@ -47,7 +69,7 @@
 }
 
 .btn-slide {
-  background-color: #F5167E;
+  background-color: #FF3995;
   padding: 12px 24px;
   color: white;
   text-decoration: none;
@@ -62,4 +84,5 @@
   text-decoration: none;
   border-radius: 25px;
   font-weight: bold;
+  border: 1px solid #F5167E;
 }

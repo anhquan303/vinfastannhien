@@ -18,7 +18,7 @@ function Footer() {
         }}
       >
         {/* Logo */}
-        <Box
+        {/* <Box
           sx={{
             flex: 1,
             display: 'flex',
@@ -28,14 +28,14 @@ function Footer() {
         >
           <Box
             component="img"
-            src={logo} // hãy thay bằng ảnh logo thực tế
+            src={logo} 
             alt="VinFast"
             sx={{ maxWidth: '250px' }}
           />
-        </Box>
+        </Box> */}
 
         {/* Danh sách showroom */}
-        <Box sx={{ flex: 2 }}>
+        {/* <Box sx={{ flex: 2 }}>
           <Typography variant="h6" fontWeight="bold" gutterBottom>
             Hệ thống showroom Xe Máy Điện Vinfast Ecoxe
           </Typography>
@@ -50,7 +50,7 @@ function Footer() {
               </Grid>
             ))}
           </Grid>
-        </Box>
+        </Box> */}
       </Box>
 
       <Box
@@ -63,7 +63,7 @@ function Footer() {
         }}
       >
         <Typography variant="h6" fontWeight="bold" gutterBottom>
-          XE MÁY ĐIỆN VINFAST AN NHIÊN
+          XE MÁY ĐIỆN VINFAST AN NHIÊN QUẢNG NINH
         </Typography>
 
         <Grid container spacing={4}>
@@ -77,21 +77,21 @@ function Footer() {
               <Typography sx={{ color: '#FF6600', minWidth: 80 }}>
                 ĐỊA CHỈ:
               </Typography>
-              <Typography>954 Hạ Long</Typography>
+              <Typography>Tổ 11, khu 9B, Bãi Cháy, Thành phố Hạ Long, Tỉnh Quảng Ninh</Typography>
             </Box>
 
             <Box display="flex" gap={1} mb={1}>
               <Typography sx={{ color: '#FF6600', minWidth: 80 }}>
                 ĐIỆN THOẠI:
               </Typography>
-              <Typography>954 Cái Dăm</Typography>
+              <Typography>0988062969</Typography>
             </Box>
 
             <Box display="flex" gap={1} mb={1}>
               <Typography sx={{ color: '#FF6600', minWidth: 80 }}>
                 EMAIL:
               </Typography>
-              <Typography>954 Cái Dăm</Typography>
+              <Typography>quangphu.qnvn@gmail.com</Typography>
             </Box>
 
             <Box display="flex" gap={1} mb={1}>

@@ -17,10 +17,12 @@ import './style.css';
 import { Grid, Typography, Stack } from '@mui/material';
 import anhbia1 from '../../images/anhbia1.png';
 import anhbia2 from '../../images/anhbia2.png';
+import anhbia3 from '../../images/anhbia3.png';
+import anhbia5 from '../../images/anhbia5.png';
 
 const sliderData = [
   {
-    image: anhbia1,
+    image: anhbia5,
     title: 'VinFast Motio',
     description: 'Lựa chọn hoàn hảo cho học sinh',
     buttonText: 'Khám phá ngay',
@@ -29,6 +31,14 @@ const sliderData = [
   },
   {
     image: anhbia2,
+    title: 'Thiết kế hiện đại',
+    description: 'Thân thiện với môi trường, năng động với giới trẻ',
+    buttonText: 'Xem chi tiết',
+    buttonText1: 'Xem thêm các sản phẩm khác',
+    buttonLink: '#',
+  },
+  {
+    image: anhbia1,
     title: 'Thiết kế hiện đại',
     description: 'Thân thiện với môi trường, năng động với giới trẻ',
     buttonText: 'Xem chi tiết',
@@ -57,10 +67,14 @@ function BannerSlider() {
             style={{
               backgroundImage: `url(${item.image})`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundPosition: 'center -100px',
               backgroundRepeat: 'no-repeat',
-              height: '500px',
-              position: 'relative',
+              height: '600px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              paddingRight: '5%',
+              paddingLeft: '5%',
             }}
           >
             <div className="slide-content">

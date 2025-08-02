@@ -34,6 +34,10 @@ function Header(props) {
       href: '/product',
     },
     {
+      name: 'Hệ thống cửa hàng',
+      href: '/showroom',
+    },
+    {
       name: 'Tin tức',
       href: '/news',
     },
@@ -129,6 +133,25 @@ function Header(props) {
             >
               <MenuIcon />
             </IconButton>
+
+            <Box
+              sx={{
+                display: { xs: 'block', sm: 'none' },
+                position: 'absolute',
+                left: '50%',
+                transform: 'translateX(-50%)',
+              }}
+            >
+              <Link to="/home" style={{ textDecoration: 'none' }}>
+                <Box
+                  component="img"
+                  src={logo}
+                  alt="logo"
+                  sx={{ height: 100, padding: '10px' }}
+                />
+              </Link>
+            </Box>
+
             <Typography
               variant="h6"
               component="div"
@@ -144,6 +167,7 @@ function Header(props) {
                 />
               </Link>
             </Typography>
+
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map(item => (
                 <Button
@@ -173,7 +197,7 @@ function Header(props) {
             open={mobileOpen}
             onClose={handleDrawerToggle}
             ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
+              keepMounted: true,
             }}
             sx={{
               display: { xs: 'block', sm: 'none' },
