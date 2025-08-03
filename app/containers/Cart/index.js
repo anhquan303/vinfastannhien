@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -40,34 +40,44 @@ export function Cart() {
   useInjectReducer({ key: 'cart', reducer });
   useInjectSaga({ key: 'cart', saga });
 
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  // const [cartItems, setCartItems] = useState(initialCartItems);
+  const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
   const [discountCode, setDiscountCode] = useState('');
   const history = useHistory();
+
+  useEffect(() => {
+    //localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const handleIncrease = id => {
     setCartItems(prev =>
       prev.map(item =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
+        item.id === id ? { ...item, quantityCart: item.quantityCart + 1 } : item,
       ),
     );
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
   };
 
   const handleDecrease = id => {
     setCartItems(prev =>
       prev.map(item =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
+        item.id === id && item.quantityCart > 1
+          ? { ...item, quantityCart: item.quantityCart - 1 }
           : item,
       ),
     );
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
   };
 
   const handleRemove = id => {
+    console.log("id: ", id);
     setCartItems(prev => prev.filter(item => item.id !== id));
+    console.log("test: ", cartItems);
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
   };
 
   const totalPrice = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + item.price * item.quantityCart,
     0,
   );
 
@@ -146,7 +156,7 @@ export function Cart() {
                   >
                     <RemoveIcon fontSize="small" />
                   </IconButton>
-                  <Typography mx={1}>{item.quantity}</Typography>
+                  <Typography mx={1}>{item.quantityCart}</Typography>
                   <IconButton
                     size="small"
                     onClick={() => handleIncrease(item.id)}
@@ -157,7 +167,7 @@ export function Cart() {
               </Grid>
               <Grid item xs={4} md={2}>
                 <Typography fontWeight="bold">
-                  {(item.price * item.quantity).toLocaleString('vi-VN')}đ
+                  {(item.price * item.quantityCart).toLocaleString('vi-VN')}đ
                 </Typography>
               </Grid>
             </Grid>

@@ -5,6 +5,7 @@
  */
 import produce from 'immer';
 import {
+  ADD_TO_CART_SUCCESS,
   DEFAULT_ACTION,
   FETCH_PRODUCT_DETAIL,
   FETCH_PRODUCT_DETAIL_FAILURE,
@@ -19,6 +20,7 @@ export const initialState = {
   productLst: [],
   productDetail: null,
   error: null,
+  cartItems: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -50,6 +52,17 @@ const productsReducer = (state = initialState, action) =>
         draft.loading = false;
         draft.error = action.error;
         break;
+      case ADD_TO_CART_SUCCESS: {
+        const existing = draft.cartItems.find(i => i.id === action.product.id);
+        existing && console.log(existing.quantityCart)
+        console.log("action.product.quantityCart", action.product.quantityCart)
+        if (existing) {
+          existing.quantityCart += action.product.quantityCart;
+        } else {
+          draft.cartItems.push({ ...action.product });
+        }
+        break;
+      }
       case DEFAULT_ACTION:
         break;
     }

@@ -4,7 +4,7 @@
  *
  */
 
-import { DEFAULT_ACTION, FETCH_PRODUCT_DETAIL, FETCH_PRODUCT_DETAIL_FAILURE, FETCH_PRODUCT_DETAIL_SUCCESS, FETCH_PRODUCTS, FETCH_PRODUCTS_FAILURE, FETCH_PRODUCTS_SUCCESS } from './constants';
+import { ADD_TO_CART, DEFAULT_ACTION, FETCH_PRODUCT_DETAIL, FETCH_PRODUCT_DETAIL_FAILURE, FETCH_PRODUCT_DETAIL_SUCCESS, FETCH_PRODUCTS, FETCH_PRODUCTS_FAILURE, FETCH_PRODUCTS_SUCCESS } from './constants';
 
 export function defaultAction() {
   return {
@@ -40,3 +40,10 @@ export const fetchProductDetailFailure = error => ({
   type: FETCH_PRODUCT_DETAIL_FAILURE,
   error,
 });
+
+export function addToCart(product) {
+  return {
+    type: ADD_TO_CART,
+    product,
+  };
+}

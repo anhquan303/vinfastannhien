@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import AppBar from '@mui/material/AppBar';
@@ -14,8 +14,11 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import Badge from '@mui/material/Badge';
 import { NavLink, Link } from 'react-router-dom';
 import logo from '../../images/logo.png';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import CartPreview from './component/CartPreview';
 
 function Header(props) {
   const { window } = props;
@@ -44,10 +47,15 @@ function Header(props) {
     {
       name: 'Giỏ hàng',
       href: '/cart',
+      isCart: true,
     },
   ];
 
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [cartItem, setCartItem] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
+  const totalQuantity = cartItem.reduce((sum, item) => sum + item.quantityCart, 0);
+  const [showPopup, setShowPopup] = useState(false);
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(prevState => !prevState);
@@ -99,6 +107,14 @@ function Header(props) {
             </ListItemButton>
           </ListItem>
         ))}
+        <Box position="relative" onMouseLeave={() => setShowPopup(false)}>
+          <IconButton onMouseEnter={() => setShowPopup(true)}>
+            <Badge badgeContent={totalQuantity} color="error">
+              <ShoppingBagIcon />
+            </Badge>
+          </IconButton>
+          {showPopup && <CartPreview onClose={() => setShowPopup(false)} />}
+        </Box>
       </List>
     </Box>
   );
@@ -168,7 +184,7 @@ function Header(props) {
               </Link>
             </Typography>
 
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            {/* <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map(item => (
                 <Button
                   key={item.href}
@@ -187,6 +203,63 @@ function Header(props) {
                   {item.name}
                 </Button>
               ))}
+              <Box position="relative" onMouseLeave={() => setShowPopup(false)}>
+                <IconButton onMouseEnter={() => setShowPopup(true)}>
+                  <Badge badgeContent={totalQuantity} color="error">
+                    <ShoppingBagIcon />
+                  </Badge>
+                </IconButton>
+                {showPopup && <CartPreview onClose={() => setShowPopup(false)} />}
+              </Box>
+            </Box> */}
+            <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center' }}>
+              {navItems.map(item =>
+                item.isCart ? (
+                  <Button
+                    key={item.href}
+                    component={NavLink}
+                    to={item.href}
+                    sx={{
+                      color: '#6E6565',
+                      fontSize: '16px',
+                      textTransform: 'uppercase',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      '&.active': {
+                        color: '#F44336',
+                        fontWeight: 'bold',
+                      },
+                    }}
+
+                    onMouseEnter={() => setShowPopup(true)}
+                    onMouseLeave={() => setShowPopup(false)}
+                  >
+                    <Badge badgeContent={totalQuantity} color="error">
+                      <ShoppingBagIcon />
+                    </Badge>
+                    {showPopup && <CartPreview onClose={() => setShowPopup(false)} />}
+                    Giỏ hàng
+                  </Button>
+                ) : (
+                  <Button
+                    key={item.href}
+                    component={NavLink}
+                    to={item.href}
+                    sx={{
+                      color: '#6E6565',
+                      fontSize: '16px',
+                      textTransform: 'uppercase',
+                      '&.active': {
+                        color: '#F44336',
+                        fontWeight: 'bold',
+                      },
+                    }}
+                  >
+                    {item.name}
+                  </Button>
+                )
+              )}
             </Box>
           </Toolbar>
         </AppBar>

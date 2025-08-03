@@ -12,7 +12,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchProductDetail } from '../actions';
+import { addToCart, fetchProductDetail } from '../actions';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from '../reducer';
@@ -24,22 +24,27 @@ export default function Detail() {
   useInjectSaga({ key: 'productDetail', saga });
 
   const dispatch = useDispatch();
-  const [quantity, setQuantity] = useState(1);
+  const [quantityCart, setQuantity] = useState(1);
   const { slug } = useParams();
-  const { productDetail, loading, error } = useSelector(
+  const { productDetail, cartItems, loading, error } = useSelector(
     state => state.productDetail || {},
   );
 
   useEffect(() => {
-    console.log('Dispatch fetchProductDetail', slug);
     dispatch(fetchProductDetail(slug));
   }, [slug]);
 
-  useEffect(() => {
-    console.log('useEffect chạy'); // 👈 nếu không in, chứng minh Detail không được render
-  }, []);
+  const handleAddToCart = () => {
+    console.log("quantityCart: ", quantityCart)
+    dispatch(addToCart({ ...productDetail, quantityCart }));
+    setSnackbarOpen(true);
+  };
 
-  console.log('ádsadas', productDetail);
+  // const cartItemss = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  // cartItemss.push(cartItems);
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+  console.log("cartItems: ", cartItems);
 
   return (
     <>
@@ -59,7 +64,7 @@ export default function Detail() {
 
             <Grid item xs={12} md={7}>
               <Typography variant="h5" fontWeight="bold">
-                {productDetail.name} 
+                {productDetail.name}
               </Typography>
 
               <Typography variant="h6" color="primary" fontWeight="bold" mt={1}>
@@ -102,17 +107,17 @@ export default function Detail() {
               <Box display="flex" alignItems="center" gap={1} mb={2}>
                 <Typography>Số lượng</Typography>
                 <IconButton
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  onClick={() => setQuantity(Math.max(1, quantityCart - 1))}
                 >
                   <RemoveIcon />
                 </IconButton>
-                <Typography>{quantity}</Typography>
-                <IconButton onClick={() => setQuantity(quantity + 1)}>
+                <Typography>{quantityCart}</Typography>
+                <IconButton onClick={() => setQuantity(quantityCart + 1)}>
                   <AddIcon />
                 </IconButton>
               </Box>
 
-              <Button variant="contained" color="error" size="large">
+              <Button variant="contained" color="error" size="large" onClick={handleAddToCart}>
                 MUA HÀNG
               </Button>
             </Grid>
