@@ -54,8 +54,8 @@ const productsReducer = (state = initialState, action) =>
         break;
       case ADD_TO_CART_SUCCESS: {
         const existing = draft.cartItems.find(i => i.id === action.product.id);
-        existing && console.log(existing.quantityCart)
-        console.log("action.product.quantityCart", action.product.quantityCart)
+        existing && console.log(existing.quantityCart);
+        console.log('action.product.quantityCart', action.product.quantityCart);
         if (existing) {
           existing.quantityCart += action.product.quantityCart;
         } else {

@@ -14,10 +14,6 @@ import { compose } from 'redux';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectCart from './selectors';
-import reducer from './reducer';
-import saga from './saga';
-import messages from './messages';
 import {
   Box,
   Grid,
@@ -33,26 +29,34 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
-import { initialCartItems } from './constants';
 import { useHistory } from 'react-router-dom';
+import { initialCartItems } from './constants';
+import messages from './messages';
+import saga from './saga';
+import reducer from './reducer';
+import makeSelectCart from './selectors';
 
 export function Cart() {
   useInjectReducer({ key: 'cart', reducer });
   useInjectSaga({ key: 'cart', saga });
 
   // const [cartItems, setCartItems] = useState(initialCartItems);
-  const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
+  const [cartItems, setCartItems] = useState(
+    JSON.parse(localStorage.getItem('cartItems')) || [],
+  );
   const [discountCode, setDiscountCode] = useState('');
   const history = useHistory();
 
   useEffect(() => {
-    //localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    // localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
   const handleIncrease = id => {
     setCartItems(prev =>
       prev.map(item =>
-        item.id === id ? { ...item, quantityCart: item.quantityCart + 1 } : item,
+        item.id === id
+          ? { ...item, quantityCart: item.quantityCart + 1 }
+          : item,
       ),
     );
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
@@ -70,9 +74,9 @@ export function Cart() {
   };
 
   const handleRemove = id => {
-    console.log("id: ", id);
+    console.log('id: ', id);
     setCartItems(prev => prev.filter(item => item.id !== id));
-    console.log("test: ", cartItems);
+    console.log('test: ', cartItems);
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   };
 

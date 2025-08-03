@@ -16,8 +16,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import Badge from '@mui/material/Badge';
 import { NavLink, Link } from 'react-router-dom';
-import logo from '../../images/logo.png';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import logo from '../../images/logo.png';
 import CartPreview from './component/CartPreview';
 
 function Header(props) {
@@ -52,10 +52,14 @@ function Header(props) {
   ];
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [cartItem, setCartItem] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
-  const totalQuantity = cartItem.reduce((sum, item) => sum + item.quantityCart, 0);
+  const [cartItem, setCartItem] = useState(
+    JSON.parse(localStorage.getItem('cartItems')) || [],
+  );
+  const totalQuantity = cartItem.reduce(
+    (sum, item) => sum + item.quantityCart,
+    0,
+  );
   const [showPopup, setShowPopup] = useState(false);
-
 
   const handleDrawerToggle = () => {
     setMobileOpen(prevState => !prevState);
@@ -212,7 +216,9 @@ function Header(props) {
                 {showPopup && <CartPreview onClose={() => setShowPopup(false)} />}
               </Box>
             </Box> */}
-            <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center' }}>
+            <Box
+              sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center' }}
+            >
               {navItems.map(item =>
                 item.isCart ? (
                   <Button
@@ -231,14 +237,15 @@ function Header(props) {
                         fontWeight: 'bold',
                       },
                     }}
-
                     onMouseEnter={() => setShowPopup(true)}
                     onMouseLeave={() => setShowPopup(false)}
                   >
                     <Badge badgeContent={totalQuantity} color="error">
                       <ShoppingBagIcon />
                     </Badge>
-                    {showPopup && <CartPreview onClose={() => setShowPopup(false)} />}
+                    {showPopup && (
+                      <CartPreview onClose={() => setShowPopup(false)} />
+                    )}
                     Giỏ hàng
                   </Button>
                 ) : (
@@ -258,7 +265,7 @@ function Header(props) {
                   >
                     {item.name}
                   </Button>
-                )
+                ),
               )}
             </Box>
           </Toolbar>

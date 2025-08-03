@@ -12,12 +12,12 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart, fetchProductDetail } from '../actions';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+import { isEmpty } from 'lodash';
+import { addToCart, fetchProductDetail } from '../actions';
 import reducer from '../reducer';
 import saga from '../saga';
-import { isEmpty } from 'lodash';
 
 export default function Detail() {
   useInjectReducer({ key: 'productDetail', reducer });
@@ -35,7 +35,7 @@ export default function Detail() {
   }, [slug]);
 
   const handleAddToCart = () => {
-    console.log("quantityCart: ", quantityCart)
+    console.log('quantityCart: ', quantityCart);
     dispatch(addToCart({ ...productDetail, quantityCart }));
     setSnackbarOpen(true);
   };
@@ -44,7 +44,7 @@ export default function Detail() {
   // cartItemss.push(cartItems);
   localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
-  console.log("cartItems: ", cartItems);
+  console.log('cartItems: ', cartItems);
 
   return (
     <>
@@ -56,8 +56,8 @@ export default function Detail() {
             <Grid item xs={12} md={5}>
               <Box
                 component="img"
-                //src={productDetail.imageMain}
-                //alt={productDetail.name}
+                // src={productDetail.imageMain}
+                // alt={productDetail.name}
                 width="100%"
               />
             </Grid>
@@ -117,7 +117,12 @@ export default function Detail() {
                 </IconButton>
               </Box>
 
-              <Button variant="contained" color="error" size="large" onClick={handleAddToCart}>
+              <Button
+                variant="contained"
+                color="error"
+                size="large"
+                onClick={handleAddToCart}
+              >
                 MUA HÀNG
               </Button>
             </Grid>

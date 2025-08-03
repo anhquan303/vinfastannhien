@@ -1,13 +1,18 @@
 import { take, call, put, select, takeLatest } from 'redux-saga/effects';
-import { db } from '../../firebaseConfig';
 import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../../firebaseConfig';
 import {
   fetchProductDetailFailure,
   fetchProductDetailSuccess,
   fetchProductsFailure,
   fetchProductsSuccess,
 } from './actions';
-import { ADD_TO_CART, ADD_TO_CART_SUCCESS, FETCH_PRODUCT_DETAIL, FETCH_PRODUCTS } from './constants';
+import {
+  ADD_TO_CART,
+  ADD_TO_CART_SUCCESS,
+  FETCH_PRODUCT_DETAIL,
+  FETCH_PRODUCTS,
+} from './constants';
 
 export function* fetchProductsSaga() {
   try {
@@ -49,5 +54,5 @@ export default function* productsSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(FETCH_PRODUCTS, fetchProductsSaga);
   yield takeLatest(FETCH_PRODUCT_DETAIL, fetchProductDetailSaga);
-   yield takeLatest(ADD_TO_CART, handleAddToCart);
+  yield takeLatest(ADD_TO_CART, handleAddToCart);
 }
