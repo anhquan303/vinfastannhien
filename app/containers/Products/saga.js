@@ -1,5 +1,11 @@
-import { take, call, put, select, takeLatest } from 'redux-saga/effects';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import {
+  take,
+  call,
+  put,
+  select,
+  takeLatest,
+  takeLeading,
+} from 'redux-saga/effects';
 import { db } from '../../firebaseConfig';
 import {
   fetchProductDetailFailure,
@@ -36,7 +42,6 @@ function* fetchProductDetailSaga(action) {
     if (querySnapshot.empty) {
       throw new Error('Không tìm thấy sản phẩm');
     }
-
     const docData = querySnapshot.docs[0].data();
     yield put(fetchProductDetailSuccess(docData));
   } catch (err) {
@@ -54,5 +59,5 @@ export default function* productsSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(FETCH_PRODUCTS, fetchProductsSaga);
   yield takeLatest(FETCH_PRODUCT_DETAIL, fetchProductDetailSaga);
-  yield takeLatest(ADD_TO_CART, handleAddToCart);
+  yield takeLeading(ADD_TO_CART, handleAddToCart);
 }

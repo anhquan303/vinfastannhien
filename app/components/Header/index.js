@@ -221,33 +221,37 @@ function Header(props) {
             >
               {navItems.map(item =>
                 item.isCart ? (
-                  <Button
+                  <Box
                     key={item.href}
-                    component={NavLink}
-                    to={item.href}
-                    sx={{
-                      color: '#6E6565',
-                      fontSize: '16px',
-                      textTransform: 'uppercase',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      '&.active': {
-                        color: '#F44336',
-                        fontWeight: 'bold',
-                      },
-                    }}
+                    sx={{ position: 'relative' }}
                     onMouseEnter={() => setShowPopup(true)}
                     onMouseLeave={() => setShowPopup(false)}
                   >
-                    <Badge badgeContent={totalQuantity} color="error">
-                      <ShoppingBagIcon />
-                    </Badge>
+                    <Button
+                      component={NavLink}
+                      to={item.href}
+                      sx={{
+                        color: '#6E6565',
+                        fontSize: '16px',
+                        textTransform: 'uppercase',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        '&.active': {
+                          color: '#F44336',
+                          fontWeight: 'bold',
+                        },
+                      }}
+                    >
+                      <Badge badgeContent={totalQuantity} color="error">
+                        <ShoppingBagIcon />
+                      </Badge>
+                      Giỏ hàng
+                    </Button>
                     {showPopup && (
                       <CartPreview onClose={() => setShowPopup(false)} />
                     )}
-                    Giỏ hàng
-                  </Button>
+                  </Box>
                 ) : (
                   <Button
                     key={item.href}

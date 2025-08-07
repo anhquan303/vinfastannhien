@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Box,
   Grid,
@@ -20,31 +20,42 @@ import reducer from '../reducer';
 import saga from '../saga';
 
 export default function Detail() {
-  useInjectReducer({ key: 'productDetail', reducer });
-  useInjectSaga({ key: 'productDetail', saga });
-
   const dispatch = useDispatch();
   const [quantityCart, setQuantity] = useState(1);
   const { slug } = useParams();
   const { productDetail, cartItems, loading, error } = useSelector(
-    state => state.productDetail || {},
+    state => state.products || {},
   );
 
+
+  // useEffect(() => {
+  //   console.log('slug:', slug);
+  //   dispatch(fetchProductDetail(slug));
+  // }, [slug]);
+
   useEffect(() => {
-    dispatch(fetchProductDetail(slug));
+    if (slug) {
+      const timeout = setTimeout(() => {
+        dispatch(fetchProductDetail(slug));
+      }, 0);
+      return () => clearTimeout(timeout);
+    }
   }, [slug]);
 
-  const handleAddToCart = () => {
-    console.log('quantityCart: ', quantityCart);
+  // const handleAddToCart = () => {
+  //   dispatch(addToCart({ ...productDetail, quantityCart }));
+  //   //setSnackbarOpen(true);
+  // };
+
+  const handleAddToCart = useCallback(() => {
     dispatch(addToCart({ ...productDetail, quantityCart }));
-    setSnackbarOpen(true);
-  };
+  }, [dispatch, productDetail, quantityCart]);
 
-  // const cartItemss = JSON.parse(localStorage.getItem('cartItems') || '[]');
-  // cartItemss.push(cartItems);
-  localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
-  console.log('cartItems: ', cartItems);
+  // useEffect(() => {
+  //   if (!isEmpty(cartItems)) {
+  //     localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  //   }
+  // }, [cartItems]);
 
   return (
     <>
@@ -56,9 +67,9 @@ export default function Detail() {
             <Grid item xs={12} md={5}>
               <Box
                 component="img"
-                // src={productDetail.imageMain}
+                src={productDetail.img}
                 // alt={productDetail.name}
-                width="100%"
+                width="80%"
               />
             </Grid>
 

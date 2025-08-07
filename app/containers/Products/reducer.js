@@ -14,6 +14,7 @@ import {
   FETCH_PRODUCTS_FAILURE,
   FETCH_PRODUCTS_SUCCESS,
 } from './constants';
+import { isEmpty } from 'lodash';
 
 export const initialState = {
   loading: false,
@@ -53,14 +54,16 @@ const productsReducer = (state = initialState, action) =>
         draft.error = action.error;
         break;
       case ADD_TO_CART_SUCCESS: {
+        draft.cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
         const existing = draft.cartItems.find(i => i.id === action.product.id);
-        existing && console.log(existing.quantityCart);
-        console.log('action.product.quantityCart', action.product.quantityCart);
-        if (existing) {
+
+        if (!isEmpty({ ...existing })) {
           existing.quantityCart += action.product.quantityCart;
         } else {
           draft.cartItems.push({ ...action.product });
         }
+
+        localStorage.setItem('cartItems', JSON.stringify(draft.cartItems));
         break;
       }
       case DEFAULT_ACTION:

@@ -4,9 +4,9 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
@@ -32,13 +32,47 @@ import {
   Button,
 } from '@mui/material';
 import { useLocation } from 'react-router-dom';
+import { fetchDistricts, fetchProvinces, fetchWards } from './actions';
 
 export function Payment() {
   useInjectReducer({ key: 'payment', reducer });
   useInjectSaga({ key: 'payment', saga });
 
+  const [selectedProvince, setSelectedProvince] = useState('');
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [selectedWard, setSelectedWard] = useState('');
+
+  const dispatch = useDispatch();
+  const payment = useSelector(makeSelectPayment());
+
+  const { provinces, districts, wards } = payment;
+
   const location = useLocation();
   const { cartItems = [], totalPrice = 0 } = location.state || {};
+
+  useEffect(() => {
+    dispatch(fetchProvinces());
+  }, []);
+
+  useEffect(() => {
+    if (selectedProvince) {
+      dispatch(fetchDistricts(selectedProvince));
+    }
+  }, [selectedProvince]);
+
+  const onProvinceChange = e => {
+    //const province = provinces.find(p => p.code === +e.target.value);
+    setSelectedProvince(e.target.value);
+    // setDistricts(province?.districts || []);
+    // setSelectedDistrict('');
+    // setWards([]);
+  };
+
+  useEffect(() => {
+    if (selectedDistrict) {
+      dispatch(fetchWards(selectedDistrict));
+    }
+  }, [selectedDistrict]);
 
   return (
     <Box px={{ xs: 2, md: 8 }} py={4}>
@@ -53,15 +87,50 @@ export function Payment() {
           <TextField label="Họ và tên" fullWidth required sx={{ mb: 2 }} />
           <TextField label="Số điện thoại" fullWidth required sx={{ mb: 2 }} />
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              {/* <TextField
+                label="Chọn Tỉnh/Thành phố"
+                fullWidth
+                select
+                SelectProps={{ native: true }}
+              >
+                {provinces.map(p => (
+                  <MenuItem key={p.code} value={p.code}>
+                    {p.name}
+                  </MenuItem>
+                ))}
+              </TextField> */}
+              <TextField
+                select
+                label="Chọn Tỉnh/Thành phố"
+                value={selectedProvince}
+                onChange={onProvinceChange}
+                fullWidth
+                margin="normal"
+              >
+                {provinces.map(p => (
+                  <MenuItem key={p.code} value={p.code}>
+                    {p.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
             <Grid item xs={6}>
               <TextField
                 label="Chọn Quận/Huyện"
                 fullWidth
                 select
                 SelectProps={{ native: true }}
+                disabled={!selectedProvince}
+                onChange={e => {
+                  setSelectedDistrict(e.target.value);
+                }}
               >
-                <option value="">Chọn Quận/Huyện</option>
-                <option value="q1">Quận 1</option>
+                {districts.map(d => (
+                  <option key={d.code} value={d.code}>
+                    {d.name}
+                  </option>
+                ))}
               </TextField>
             </Grid>
             <Grid item xs={6}>
@@ -70,9 +139,16 @@ export function Payment() {
                 fullWidth
                 select
                 SelectProps={{ native: true }}
+                disabled={!selectedDistrict}
+                 onChange={e => {
+                  setSelectedWard(e.target.value);
+                }}
               >
-                <option value="">Chọn Phường/Xã</option>
-                <option value="px1">Phường A</option>
+                {wards.map(w => (
+                  <option key={w.code} value={w.code}>
+                    {w.name}
+                  </option>
+                ))}
               </TextField>
             </Grid>
           </Grid>
@@ -103,10 +179,10 @@ export function Payment() {
                 mb={1}
               >
                 <Typography>
-                  {item.name} ×{item.quantity}
+                  {item.name} ×{item.quantityCart}
                 </Typography>
                 <Typography fontWeight="bold">
-                  {(item.price * item.quantity).toLocaleString('vi-VN')}đ
+                  {(item.price * item.quantityCart).toLocaleString('vi-VN')}đ
                 </Typography>
               </Box>
             ))}
@@ -156,26 +232,35 @@ export function Payment() {
   );
 }
 
-Payment.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+// Payment.propTypes = {
+//   dispatch: PropTypes.func.isRequired,
+// };
+
+// const mapStateToProps = createStructuredSelector({
+//   payment: makeSelectPayment(),
+// });
+
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     dispatch,
+//   };
+// }
+
+// const withConnect = connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// );
+
+// export default compose(
+//   withConnect,
+//   memo,
+// )(Payment);
 
 const mapStateToProps = createStructuredSelector({
   payment: makeSelectPayment(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
-
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
-
 export default compose(
-  withConnect,
+  connect(mapStateToProps),
   memo,
 )(Payment);

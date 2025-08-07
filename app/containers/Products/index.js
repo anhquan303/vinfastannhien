@@ -103,7 +103,7 @@ export function Products() {
       {/* Grid sản phẩm */}
       <Grid container spacing={3}>
         {paginatedProducts.map((product, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
+          <Grid item xs={12} sm={6} md={3} key={index}>
             <Box
               sx={{
                 border: index === 0 ? '2px solid #1976d2' : '1px solid #eee',

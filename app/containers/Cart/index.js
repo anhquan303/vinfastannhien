@@ -74,10 +74,9 @@ export function Cart() {
   };
 
   const handleRemove = id => {
-    console.log('id: ', id);
-    setCartItems(prev => prev.filter(item => item.id !== id));
-    console.log('test: ', cartItems);
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    const updatedCart = cartItems.filter(item => item.id !== id);
+    setCartItems(updatedCart);
+    localStorage.setItem('cartItems', JSON.stringify(updatedCart));
   };
 
   const totalPrice = cartItems.reduce(
@@ -138,7 +137,7 @@ export function Cart() {
                     <DeleteIcon />
                   </IconButton>
                   <img
-                    src={item.image}
+                    src={item.img}
                     alt={item.name}
                     width={80}
                     height={60}
