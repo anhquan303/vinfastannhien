@@ -7,6 +7,9 @@ import { LOAD_REPOS } from 'containers/App/constants';
 import { reposLoaded, repoLoadingError } from 'containers/App/actions';
 import request from 'utils/request';
 import { makeSelectUsername } from 'containers/HomePage/selectors';
+import { db } from '../../firebaseConfig';
+import { FETCH_PRODUCTS } from './constants';
+import { fetchProductsFailure, fetchProductsSuccess } from './actions';
 
 /**
  * Github repos request/response handler
@@ -25,6 +28,19 @@ export function* getRepos() {
   }
 }
 
+export function* fetchProductsSaga() {
+  try {
+    const snapshot = yield call([db.collection('products'), 'get']);
+    const products = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    yield put(fetchProductsSuccess(products));
+  } catch (error) {
+    yield put(fetchProductsFailure(error.message));
+  }
+}
+
 /**
  * Root saga manages watcher lifecycle
  */
@@ -34,4 +50,5 @@ export default function* githubData() {
   // It returns task descriptor (just like fork) so we can continue execution
   // It will be cancelled automatically on component unmount
   yield takeLatest(LOAD_REPOS, getRepos);
+  yield takeLatest(FETCH_PRODUCTS, fetchProductsSaga);
 }

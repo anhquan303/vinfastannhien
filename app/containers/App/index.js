@@ -24,12 +24,13 @@ import { News } from '../News';
 import { Products } from '../Products';
 import Detail from '../Products/component/Detail';
 import './style.css';
-import { FaFacebookF } from 'react-icons/fa';
+import { FaFacebookF, FaArrowUp } from 'react-icons/fa';
 import { SiZalo } from 'react-icons/si';
-import { FaArrowUp } from 'react-icons/fa';
+
 import { Cart } from '../Cart';
 import { Payment } from '../Payment';
 import NewsDetail from '../News/component/DetailNews';
+import ScrollToTop from '../../components/ScrollToTop';
 
 const AppWrapper = styled.div`
   // max-width: calc(768px + 16px * 2);
@@ -58,6 +59,7 @@ export default function App() {
 
   return (
     <AppWrapper>
+      <ScrollToTop />
       <Helmet
         // titleTemplate="%s - Vinfast An Nhiên"
         titleTemplate="Vinfast An Nhiên"

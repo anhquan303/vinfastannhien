@@ -1,18 +1,19 @@
 import React, { memo, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector, connect } from 'react-redux';
+
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+import { Box, Grid, Typography } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
 import makeSelectShowroom from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import { Box, Grid, Typography } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
 import { showroomList } from './constants';
 import logo from '../../images/logo.png';
 import { fetchShowrooms } from './actions';
+import LoadingScreen from '../../components/Loading';
 
 export function Showroom() {
   useInjectReducer({ key: 'showroom', reducer });
@@ -21,7 +22,7 @@ export function Showroom() {
   const dispatch = useDispatch();
   const showroom = useSelector(makeSelectShowroom());
 
-  const {showrooms} = showroom
+  const { showrooms, loading } = showroom;
 
   useEffect(() => {
     dispatch(fetchShowrooms());
@@ -38,6 +39,22 @@ export function Showroom() {
           alignItems: 'center',
         }}
       >
+        {loading && (
+          <Box
+            sx={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 1300,
+              bgcolor: 'rgba(0,0,0,0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backdropFilter: 'blur(1px)',
+            }}
+          >
+            <LoadingScreen />
+          </Box>
+        )}
         {/* Logo */}
         <Box
           sx={{

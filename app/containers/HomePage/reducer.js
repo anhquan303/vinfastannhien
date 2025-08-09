@@ -8,11 +8,18 @@
  */
 
 import produce from 'immer';
-import { CHANGE_USERNAME } from './constants';
+import {
+  CHANGE_USERNAME,
+  FETCH_PRODUCTS,
+  FETCH_PRODUCTS_FAILURE,
+  FETCH_PRODUCTS_SUCCESS,
+} from './constants';
 
 // The initial state of the App
 export const initialState = {
   username: '',
+  productLst: [],
+  loading: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -22,6 +29,18 @@ const homeReducer = (state = initialState, action) =>
       case CHANGE_USERNAME:
         // Delete prefixed '@' from the github username
         draft.username = action.username.replace(/@/gi, '');
+        break;
+      case FETCH_PRODUCTS:
+        draft.loading = true;
+        draft.error = null;
+        break;
+      case FETCH_PRODUCTS_SUCCESS:
+        draft.loading = false;
+        draft.productLst = action.productLst;
+        break;
+      case FETCH_PRODUCTS_FAILURE:
+        draft.loading = false;
+        draft.error = action.error;
         break;
     }
   });

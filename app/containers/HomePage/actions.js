@@ -15,7 +15,12 @@
  *    }
  */
 
-import { CHANGE_USERNAME } from './constants';
+import {
+  CHANGE_USERNAME,
+  FETCH_PRODUCTS,
+  FETCH_PRODUCTS_FAILURE,
+  FETCH_PRODUCTS_SUCCESS,
+} from './constants';
 
 /**
  * Changes the input field of the form
@@ -30,3 +35,17 @@ export function changeUsername(username) {
     username,
   };
 }
+
+export const fetchProducts = () => ({
+  type: FETCH_PRODUCTS,
+});
+
+export const fetchProductsSuccess = productLst => ({
+  type: FETCH_PRODUCTS_SUCCESS,
+  productLst,
+});
+
+export const fetchProductsFailure = error => ({
+  type: FETCH_PRODUCTS_FAILURE,
+  error,
+});

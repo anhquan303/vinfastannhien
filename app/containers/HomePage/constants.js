@@ -15,24 +15,6 @@ import tool4 from '../../images/tool4.png';
 
 export const CHANGE_USERNAME = 'boilerplate/Home/CHANGE_USERNAME';
 
-export const products = [
-  {
-    name: 'Xe máy điện VinFast Motio',
-    price: '12,000,000 đ',
-    image: '/images/vinfast-motio.png',
-  },
-  {
-    name: 'Xe máy điện VinFast Evo Lite Neo',
-    price: '14.400.000 đ',
-    image: '/images/vinfast-evo-lite-neo.png',
-  },
-  {
-    name: 'Xe máy điện VinFast Evo Neo',
-    price: '17.800.000 đ',
-    image: '/images/vinfast-evo-neo.png',
-  },
-];
-
 export const explore_products = [
   {
     name: 'Xe máy điện VinFast Motio',
@@ -92,3 +74,7 @@ export const services = [
       'Vinfast An Nhiên cung cấp tất cả các phụ tùng, phụ kiện chính hãng của Vinfast.',
   },
 ];
+
+export const FETCH_PRODUCTS = 'app/Home/FETCH_PRODUCTS';
+export const FETCH_PRODUCTS_SUCCESS = 'app/Home/FETCH_PRODUCTS_SUCCESS';
+export const FETCH_PRODUCTS_FAILURE = 'app/Home/FETCH_PRODUCTS_FAILURE';

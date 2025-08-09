@@ -177,12 +177,12 @@ export function Cart() {
           ))}
 
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mt={3}>
-            <Button variant="outlined" color="primary">
+            <Button variant="outlined" color="primary" href="/product">
               ← Tiếp tục xem sản phẩm
             </Button>
-            <Button variant="contained" color="primary">
+            {/* <Button variant="contained" color="primary">
               Cập nhật giỏ hàng
-            </Button>
+            </Button> */}
           </Stack>
         </Grid>
 
