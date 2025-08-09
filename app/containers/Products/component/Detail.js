@@ -7,6 +7,10 @@ import {
   Chip,
   Divider,
   IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Stack,
 } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
@@ -18,6 +22,9 @@ import { isEmpty } from 'lodash';
 import { addToCart, fetchProductDetail } from '../actions';
 import reducer from '../reducer';
 import saga from '../saga';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
+import LanguageIcon from '@mui/icons-material/Language';
 
 export default function Detail() {
   const dispatch = useDispatch();
@@ -26,7 +33,6 @@ export default function Detail() {
   const { productDetail, cartItems, loading, error } = useSelector(
     state => state.products || {},
   );
-
 
   // useEffect(() => {
   //   console.log('slug:', slug);
@@ -57,10 +63,12 @@ export default function Detail() {
   //   }
   // }, [cartItems]);
 
+  console.log('productDetail: ', productDetail);
+
   return (
     <>
       {!isEmpty(productDetail) ? (
-        <Box px={{ xs: 2, md: 10 }} py={5}>
+        <Box maxWidth="lg" mx="auto" px={{ xs: 2, sm: 4, md: 6, lg: 8 }} py={5}>
           <Typography variant="caption">TRANG CHỦ / SẢN PHẨM</Typography>
 
           <Grid container spacing={4} mt={2}>
@@ -159,53 +167,135 @@ export default function Detail() {
                 width="100%"
                 mb={2}
               />
-              <Box
+              {/* <Box
                 component="img"
                 src={productDetail.imageColor}
                 alt="highlight"
                 width="100%"
-              />
+              /> */}
             </Box>
 
-            <Typography
+            {/* <Typography
               variant="h6"
               color="error"
               fontWeight="bold"
               gutterBottom
             >
               Điểm nổi bật của VinFast EVO Lite Neo
+            </Typography> */}
+
+            <Box maxWidth="md" mx="auto" mt={4} px={2}>
+              <Typography
+                variant="h5"
+                align="center"
+                gutterBottom
+                sx={{
+                  color: '#f44336',
+                  fontWeight: 'bold',
+                  marginBottom: '2rem',
+                }}
+              >
+                Điểm nổi bật của VinFast Motio
+              </Typography>
+
+              <Grid container spacing={2} border="1px solid #ccc">
+                {productDetail.features.map((item, index) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    key={index}
+                    sx={{
+                      borderRight: index % 2 === 0 ? '1px solid #ccc' : 'none',
+                      borderBottom: index < 2 ? '1px solid #ccc' : 'none',
+                      p: 2,
+                    }}
+                  >
+                    <Typography
+                      variant="subtitle1"
+                      fontWeight="bold"
+                      gutterBottom
+                      sx={{ color: '#333' }}
+                    >
+                      {item.title}
+                    </Typography>
+                    <List dense disablePadding>
+                      {item.details.map((line, i) => (
+                        <ListItem key={i} sx={{ display: 'list-item', pl: 2 }}>
+                          <Typography variant="body2">{line}</Typography>
+                        </ListItem>
+                      ))}
+                      {/* {item.details} */}
+                    </List>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+
+            <Grid container spacing={2} mt={3} justifyContent="center">
+              {productDetail.imageGallery.map((img, i) => (
+                <Grid item xs={6} sm={3} md={2} key={i}>
+                  <Box
+                    component="img"
+                    src={img}
+                    width="100%"
+                    alt={`img-${i}`}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+
+            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+              {productDetail.descriptionBottomIntro}
             </Typography>
-
-            {/* <Grid container spacing={2}>
-          {productDetail.features.map((feature, i) => (
-            <Grid item xs={12} sm={6} key={i}>
-              <Box p={2} border="1px solid #ccc" borderRadius={1}>
-                <Typography fontWeight="bold" gutterBottom>
-                  {i + 1}. {feature.title}
-                </Typography>
-                <ul style={{ paddingLeft: 20 }}>
-                  {feature.details.map((d, j) => (
-                    <li key={j}>
-                      <Typography variant="body2">{d}</Typography>
-                    </li>
-                  ))}
-                </ul>
-              </Box>
-            </Grid>
-          ))}
-        </Grid> */}
-
-            {/* <Grid container spacing={2} mt={3}>
-          {productDetail.imageGallery.map((img, i) => (
-            <Grid item xs={6} sm={3} key={i}>
-              <Box component="img" src={img} width="100%" alt={`img-${i}`} />
-            </Grid>
-          ))}
-        </Grid> */}
 
             <Typography variant="body2" mt={3}>
               {productDetail.descriptionBottom}
             </Typography>
+
+            <Box px={2} py={4}>
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                Ưu đãi hấp dẫn đang chờ bạn:
+              </Typography>
+
+              <List dense sx={{ pl: 2 }}>
+                <ListItem disablePadding>
+                  <ListItemText primary="Tặng ngay bộ sạc & ắc quy khi đặt cọc sớm" />
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemText primary="Hỗ trợ trả góp lãi suất 0%" />
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemText primary="Bảo hành chính hãng lên đến 3 năm" />
+                </ListItem>
+              </List>
+
+              <Typography variant="h6" fontWeight="bold" mt={3} gutterBottom>
+                Đến ngay VinFast An Nhiên – Trải nghiệm thực tế, lái thử miễn
+                phí!
+              </Typography>
+
+              <Stack spacing={2} mt={2}>
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <LocationOnIcon color="error" />
+                  <Typography>
+                    <b>Địa chỉ:</b> Đại lý VinFast An Nhiên
+                  </Typography>
+                </Stack>
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <PhoneInTalkIcon color="error" />
+                  <Typography>
+                    <b>Hotline/Zalo:</b> 084.587.5555
+                  </Typography>
+                </Stack>
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <LanguageIcon color="error" />
+                  <Typography>
+                    <b>Website:</b> www.vinfastannhien.com
+                  </Typography>
+                </Stack>
+              </Stack>
+            </Box>
           </Box>
         </Box>
       ) : (

@@ -44,7 +44,7 @@ export default function CartPreview({ onClose }) {
               component="img"
               src={item.img}
               alt={item.name}
-              sx={{ width: 60, height: 60, objectFit: 'cover', mr: 2 }}
+              sx={{ maxWidth: 50, maxHeight: 50, objectFit: 'contain', mr: 2 }}
             />
             <Box flex={1}>
               <Typography fontSize={14} fontWeight="bold" color="primary">

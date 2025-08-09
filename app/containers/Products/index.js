@@ -121,8 +121,30 @@ export function Products() {
                 <Chip
                   label="NEW"
                   color="error"
-                  size="small"
-                  sx={{ position: 'absolute', top: 10, right: 10 }}
+                  sx={{
+                    position: 'absolute',
+                    top: 10,
+                    right: 10,
+                    fontWeight: 'bold',
+                    '& .MuiChip-label': {
+                      fontSize: '1rem',
+                    },
+                    animation: 'pulseGlow 1.5s infinite',
+                    '@keyframes pulseGlow': {
+                      '0%': {
+                        transform: 'scale(1)',
+                        boxShadow: '0 0 0px rgba(255,0,0,0.7)',
+                      },
+                      '50%': {
+                        transform: 'scale(1.1)',
+                        boxShadow: '0 0 12px rgba(255,0,0,0.9)',
+                      },
+                      '100%': {
+                        transform: 'scale(1)',
+                        boxShadow: '0 0 0px rgba(255,0,0,0.7)',
+                      },
+                    },
+                  }}
                 />
               )}
 

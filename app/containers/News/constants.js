@@ -6,31 +6,6 @@
 
 export const DEFAULT_ACTION = 'app/News/DEFAULT_ACTION';
 
-export const newsList = [
-  {
-    title: 'VINFAST RA MẮT XE MÁY ĐIỆN EVO GRAND...',
-    date: '19/07/2025',
-    views: 120,
-    img: '/images/news1.jpg',
-    description: 'VinFast chính thức ra mắt dòng xe...',
-  },
-  {
-    title: 'VINFAST RA MẮT XE MÁY ĐIỆN EVO GRAND...',
-    date: '19/07/2025',
-    views: 120,
-    img: '/images/news1.jpg',
-    description: 'VinFast chính thức ra mắt dòng xe...',
-  },
-  {
-    title: 'VINFAST RA MẮT XE MÁY ĐIỆN EVO GRAND...',
-    date: '19/07/2025',
-    views: 120,
-    img: '/images/news1.jpg',
-    description: 'VinFast chính thức ra mắt dòng xe...',
-  },
-  // thêm các item khác tương tự...
-];
-
 export const products = [
   {
     name: 'Xe máy điện Vinfast Evo Grand Lite',
@@ -54,6 +29,14 @@ export const products = [
   },
 ];
 
-export const FETCH_NEWS = 'app/ProductList/FETCH_NEWS';
-export const FETCH_NEWS_SUCCESS = 'app/ProductList/FETCH_NEWS_SUCCESS';
-export const FETCH_NEWS_FAILURE = 'app/ProductList/FETCH_NEWS_FAILURE';
+export const FETCH_NEWS = 'app/News/FETCH_NEWS';
+export const FETCH_NEWS_SUCCESS = 'app/News/FETCH_NEWS_SUCCESS';
+export const FETCH_NEWS_FAILURE = 'app/News/FETCH_NEWS_FAILURE';
+
+export const FETCH_PRODUCTS = 'app/News/FETCH_PRODUCTS';
+export const FETCH_PRODUCTS_SUCCESS = 'app/News/FETCH_PRODUCTS_SUCCESS';
+export const FETCH_PRODUCTS_FAILURE = 'app/News/FETCH_PRODUCTS_FAILURE';
+
+export const FETCH_NEWS_DETAIL = 'app/News/FETCH_NEWS_DETAIL';
+export const FETCH_NEWS_DETAIL_SUCCESS = 'app/News/FETCH_NEWS_DETAIL_SUCCESS';
+export const FETCH_NEWS_DETAIL_FAILURE = 'app/News/FETCH_NEWS_DETAIL_FAILURE';

@@ -29,6 +29,7 @@ import { SiZalo } from 'react-icons/si';
 import { FaArrowUp } from 'react-icons/fa';
 import { Cart } from '../Cart';
 import { Payment } from '../Payment';
+import NewsDetail from '../News/component/DetailNews';
 
 const AppWrapper = styled.div`
   // max-width: calc(768px + 16px * 2);
@@ -74,6 +75,7 @@ export default function App() {
         <Route path="/product" component={Products} />
         <Route path="/products/:slug" component={Detail} />
         <Route path="/news" component={News} />
+        <Route path="/new/:slug" component={NewsDetail} />
         <Route path="/cart" component={Cart} />
         <Route path="/payment" component={Payment} />
         <Route path="" component={NotFoundPage} />
