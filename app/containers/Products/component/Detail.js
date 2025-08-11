@@ -27,8 +27,17 @@ import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 import LanguageIcon from '@mui/icons-material/Language';
 
 export default function Detail() {
+  useInjectReducer({ key: 'products', reducer }); // key phải trùng state.products
+  useInjectSaga({ key: 'products', saga });
+
   const dispatch = useDispatch();
   const [quantityCart, setQuantity] = useState(1);
+  const getHex = c => (typeof c === 'string' ? c : c?.hex);
+  const getImage = c => (typeof c === 'string' ? null : c?.image);
+
+  // state
+  const [variant, setVariant] = useState(null);
+  const [imgLoaded, setImgLoaded] = useState(false);
   const { slug } = useParams();
   const { productDetail, cartItems, loading, error } = useSelector(
     state => state.products || {},
@@ -63,7 +72,11 @@ export default function Detail() {
   //   }
   // }, [cartItems]);
 
-  console.log('productDetail: ', productDetail);
+  useEffect(() => {
+    if (productDetail?.availableColors?.length > 0) {
+      setVariant(productDetail.availableColors[0]);
+    }
+  }, [productDetail]);
 
   return (
     <>
@@ -73,11 +86,27 @@ export default function Detail() {
 
           <Grid container spacing={4} mt={2}>
             <Grid item xs={12} md={5}>
-              <Box
+              {/* <Box
                 component="img"
                 src={productDetail.img}
-                // alt={productDetail.name}
+                alt={productDetail.name}
                 width="80%"
+              /> */}
+              <Box
+                component="img"
+                key={getImage(variant) || productDetail?.img} // đổi key để trigger fade
+                src={getImage(variant) || productDetail?.img} // ảnh theo màu, fallback ảnh mặc định
+                alt={`${productDetail?.name || ''} ${
+                  variant?.name ? `- ${variant.name}` : ''
+                }`}
+                onLoad={() => setImgLoaded(true)}
+                sx={{
+                  width: { xs: '100%', md: '80%' },
+                  height: 'auto',
+                  objectFit: 'contain',
+                  transition: 'opacity .25s ease',
+                  opacity: imgLoaded ? 1 : 0,
+                }}
               />
             </Grid>
 
@@ -94,7 +123,7 @@ export default function Detail() {
               </Typography>
 
               <Typography mt={1} variant="body2" color="textSecondary">
-                👁️ {productDetail.soldCount}+ người đã mua sản phẩm này
+                👁️ {productDetail.sold}+ người đã mua sản phẩm này
               </Typography>
 
               <Box mt={2}>
@@ -109,15 +138,22 @@ export default function Detail() {
               </Box>
 
               <Box display="flex" gap={1} my={2}>
-                {productDetail.availableColors.map((color, i) => (
+                {productDetail?.availableColors?.map((color, i) => (
                   <Box
                     key={i}
+                    onClick={() => setVariant(color)} // click đổi màu
                     sx={{
-                      width: 24,
-                      height: 24,
+                      width: 28,
+                      height: 28,
                       borderRadius: '50%',
-                      backgroundColor: color,
-                      border: '1px solid #ccc',
+                      backgroundColor: color.hex || color, // nếu API trả hex thì dùng hex
+                      border:
+                        variant?.hex === color.hex || variant === color
+                          ? '2px solid #1976d2' // highlight màu đang chọn
+                          : '1px solid #ccc',
+                      cursor: 'pointer',
+                      transition: 'transform 0.15s ease, border 0.15s ease',
+                      '&:hover': { transform: 'scale(1.08)' },
                     }}
                   />
                 ))}
@@ -195,7 +231,7 @@ export default function Detail() {
                   marginBottom: '2rem',
                 }}
               >
-                Điểm nổi bật của VinFast Motio
+                Điểm nổi bật của {productDetail.name}
               </Typography>
 
               <Grid container spacing={2} border="1px solid #ccc">

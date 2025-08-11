@@ -3,8 +3,14 @@ import { Box, Container, Typography, Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchNewsDetail } from '../actions';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+import reducer from '../reducer';
+import saga from '../saga';
 
 const NewsDetail = () => {
+  useInjectReducer({ key: 'news', reducer });
+  useInjectSaga({ key: 'news', saga });
   const dispatch = useDispatch();
   const { slug } = useParams();
   const { loading, error, newDetail } = useSelector(state => state.news || {});
