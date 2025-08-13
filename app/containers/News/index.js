@@ -25,6 +25,7 @@ import {
   Divider,
   Pagination,
   Tooltip,
+  Breadcrumbs,
   Container,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -35,6 +36,7 @@ import messages from './messages';
 import { products } from './constants';
 import { fetchNews, fetchProducts } from './actions';
 import LoadingScreen from '../../components/Loading';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 export function News() {
   useInjectReducer({ key: 'news', reducer });
@@ -88,10 +90,24 @@ export function News() {
             <LoadingScreen />
           </Box>
         )}
-        <Typography variant="caption">TRANG CHỦ / TIN TỨC</Typography>
-        <Typography variant="h5" fontWeight="bold" mt={1} mb={3}>
+        {/* <Typography variant="caption">TRANG CHỦ / TIN TỨC</Typography> */}
+
+        <Box mb={2}>
+          <Breadcrumbs
+            separator={<NavigateNextIcon fontSize="small" />}
+            aria-label="breadcrumb"
+            sx={{ '& a': { textDecoration: 'none', color: 'primary.main' } }}
+          >
+            <Link to="/home">Trang chủ</Link>
+            <Typography color="text.primary" fontWeight={600}>
+              Tin tức
+            </Typography>
+          </Breadcrumbs>
+        </Box>
+
+        {/* <Typography variant="h5" fontWeight="bold" mt={1} mb={3}>
           TIN TỨC
-        </Typography>
+        </Typography> */}
 
         <Grid container spacing={4}>
           {/* Cột trái */}

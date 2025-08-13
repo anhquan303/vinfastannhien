@@ -4,13 +4,13 @@ import {
   Grid,
   Typography,
   Button,
-  Chip,
-  Divider,
   IconButton,
   List,
   ListItem,
   ListItemText,
   Stack,
+  Container,
+  Breadcrumbs,
 } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
@@ -25,6 +25,9 @@ import saga from '../saga';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 import LanguageIcon from '@mui/icons-material/Language';
+import { Link } from 'react-router-dom';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import LoadingScreen from '../../../components/Loading';
 
 export default function Detail() {
   useInjectReducer({ key: 'products', reducer }); // key phải trùng state.products
@@ -80,12 +83,39 @@ export default function Detail() {
 
   return (
     <>
+      {loading && (
+        <Box
+          sx={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1300,
+            bgcolor: 'rgba(0,0,0,0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(1px)',
+          }}
+        >
+          <LoadingScreen />
+        </Box>
+      )}
       {!isEmpty(productDetail) ? (
         <Box maxWidth="lg" mx="auto" px={{ xs: 2, sm: 4, md: 6, lg: 8 }} py={5}>
-          <Typography variant="caption">TRANG CHỦ / SẢN PHẨM</Typography>
+          <Box mb={2}>
+            <Breadcrumbs
+              separator={<NavigateNextIcon fontSize="small" />}
+              aria-label="breadcrumb"
+              sx={{ '& a': { textDecoration: 'none', color: 'primary.main' } }}
+            >
+              <Link to="/home">Trang chủ</Link>
+              <Typography color="text.primary" fontWeight={600}>
+                Sản phẩm
+              </Typography>
+            </Breadcrumbs>
+          </Box>
 
           <Grid container spacing={4} mt={2}>
-            <Grid item xs={12} md={5}>
+            <Grid item xs={12} md={6}>
               {/* <Box
                 component="img"
                 src={productDetail.img}
@@ -101,7 +131,7 @@ export default function Detail() {
                 }`}
                 onLoad={() => setImgLoaded(true)}
                 sx={{
-                  width: { xs: '100%', md: '80%' },
+                  width: { xs: '100%', md: '100%' },
                   height: 'auto',
                   objectFit: 'contain',
                   transition: 'opacity .25s ease',
@@ -110,7 +140,7 @@ export default function Detail() {
               />
             </Grid>
 
-            <Grid item xs={12} md={7}>
+            <Grid item xs={12} md={6}>
               <Typography variant="h5" fontWeight="bold">
                 {productDetail.name}
               </Typography>
@@ -123,7 +153,7 @@ export default function Detail() {
               </Typography>
 
               <Typography mt={1} variant="body2" color="textSecondary">
-                👁️ {productDetail.sold}+ người đã mua sản phẩm này
+                👁️ {productDetail.sold}+ người đã xem sản phẩm này
               </Typography>
 
               <Box mt={2}>
@@ -185,16 +215,17 @@ export default function Detail() {
 
           {/* Mô tả */}
           <Box mt={5}>
-            <Typography variant="h6" fontWeight="bold" gutterBottom>
-              MÔ TẢ
-            </Typography>
-            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-              {productDetail.descriptionIntro}
-            </Typography>
-            <Typography variant="body2" gutterBottom>
-              {productDetail.descriptionBody}
-            </Typography>
-
+            <Container maxWidth="md">
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                MÔ TẢ
+              </Typography>
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                {productDetail.descriptionIntro}
+              </Typography>
+              <Typography variant="body2" gutterBottom>
+                {productDetail.descriptionBody}
+              </Typography>
+            </Container>
             <Box my={3}>
               <Box
                 component="img"
@@ -281,7 +312,7 @@ export default function Detail() {
               ))}
             </Grid>
 
-            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+            {/* <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
               {productDetail.descriptionBottomIntro}
             </Typography>
 
@@ -331,7 +362,66 @@ export default function Detail() {
                   </Typography>
                 </Stack>
               </Stack>
-            </Box>
+            </Box> */}
+
+            <Container
+              maxWidth="md"
+              sx={{
+                marginTop: '2rem',
+              }}
+            >
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                {productDetail.descriptionBottomIntro}
+              </Typography>
+
+              <Typography variant="body2" mt={3}>
+                {productDetail.descriptionBottom}
+              </Typography>
+
+              <Box py={4}>
+                <Typography variant="h6" fontWeight="bold" gutterBottom>
+                  Ưu đãi hấp dẫn đang chờ bạn:
+                </Typography>
+
+                <List dense sx={{ pl: 2 }}>
+                  <ListItem disablePadding>
+                    <ListItemText primary="Tặng ngay bộ sạc & ắc quy khi đặt cọc sớm" />
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemText primary="Hỗ trợ trả góp lãi suất 0%" />
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemText primary="Bảo hành chính hãng lên đến 3 năm" />
+                  </ListItem>
+                </List>
+
+                <Typography variant="h6" fontWeight="bold" mt={3} gutterBottom>
+                  Đến ngay VinFast An Nhiên – Trải nghiệm thực tế, lái thử miễn
+                  phí!
+                </Typography>
+
+                <Stack spacing={2} mt={2}>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <LocationOnIcon color="error" />
+                    <Typography>
+                      <b>Địa chỉ:</b> Đại lý VinFast An Nhiên
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <PhoneInTalkIcon color="error" />
+                    <Typography>
+                      <b>Hotline/Zalo:</b> 084.587.5555
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <LanguageIcon color="error" />
+                    <Typography>
+                      <b>Website:</b> www.vinfastannhien.com
+                    </Typography>
+                  </Stack>
+                </Stack>
+              </Box>
+            </Container>
           </Box>
         </Box>
       ) : (

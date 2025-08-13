@@ -24,14 +24,15 @@ import {
   Chip,
   Pagination,
   Container,
+  Breadcrumbs,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import makeSelectProducts from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import messages from './messages';
 import { fetchProducts } from './actions';
 import LoadingScreen from '../../components/Loading';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 export function Products() {
   useInjectReducer({ key: 'products', reducer });
@@ -104,9 +105,18 @@ export function Products() {
           mb={3}
           flexWrap="wrap"
         >
-          <Typography variant="caption" mb={1}>
-            TRANG CHỦ / <b>SẢN PHẨM</b>
-          </Typography>
+          <Box mb={2}>
+            <Breadcrumbs
+              separator={<NavigateNextIcon fontSize="small" />}
+              aria-label="breadcrumb"
+              sx={{ '& a': { textDecoration: 'none', color: 'primary.main' } }}
+            >
+              <Link to="/home">Trang chủ</Link>
+              <Typography color="text.primary" fontWeight={600}>
+                Sản phẩm
+              </Typography>
+            </Breadcrumbs>
+          </Box>
           <Typography variant="body2" mb={1}>
             {/* Hiển thị được {products.length} sản phẩm */}
           </Typography>
@@ -228,6 +238,9 @@ export function Products() {
                 <Button
                   variant="contained"
                   fullWidth
+                  component={Link}
+                  to={`/products/${product.id ||
+                    encodeURIComponent(product.name)}`}
                   sx={{
                     bgcolor: 'black',
                     color: 'white',

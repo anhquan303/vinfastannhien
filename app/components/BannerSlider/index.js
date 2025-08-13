@@ -14,40 +14,54 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './style.css';
-import { Grid, Typography, Stack } from '@mui/material';
+import {
+  Grid,
+  Typography,
+  Stack,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import anhbia1 from '../../images/anhbia1.png';
+import anhbia1_mobile from '../../images/anhbia1_giua.png';
 import anhbia2 from '../../images/anhbia2.png';
-import anhbia3 from '../../images/anhbia3.png';
+import anhbia2_mobile from '../../images/anhbia2_giua.png';
 import anhbia5 from '../../images/anhbia5.png';
+import anhbia3_mobile from '../../images/anhbia3_giua.png';
 
 const sliderData = [
   {
     image: anhbia5,
+    imageMobile: anhbia1_mobile,
     title: 'VinFast Motio',
     description: 'Lựa chọn hoàn hảo cho học sinh',
     buttonText: 'Khám phá ngay',
     buttonText1: 'Xem thêm các sản phẩm khác',
-    buttonLink: '#',
+    buttonLink: '/product',
   },
   {
     image: anhbia2,
+    imageMobile: anhbia2_mobile,
     title: 'Thiết kế hiện đại',
     description: 'Thân thiện với môi trường, năng động với giới trẻ',
     buttonText: 'Xem chi tiết',
     buttonText1: 'Xem thêm các sản phẩm khác',
-    buttonLink: '#',
+    buttonLink: '/product',
   },
   {
     image: anhbia1,
+    imageMobile: anhbia3_mobile,
     title: 'Thiết kế hiện đại',
     description: 'Thân thiện với môi trường, năng động với giới trẻ',
     buttonText: 'Xem chi tiết',
     buttonText1: 'Xem thêm các sản phẩm khác',
-    buttonLink: '#',
+    buttonLink: '/product',
   },
 ];
 
 function BannerSlider() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const settings = {
     dots: true,
     infinite: true,
@@ -65,7 +79,9 @@ function BannerSlider() {
           <div
             className="slide-background"
             style={{
-              backgroundImage: `url(${item.image})`,
+              backgroundImage: `url(${
+                isMobile ? item.imageMobile : item.image
+              })`,
               backgroundSize: 'cover',
               backgroundPosition: 'center -100px',
               backgroundRepeat: 'no-repeat',
@@ -78,7 +94,7 @@ function BannerSlider() {
             }}
           >
             <div className="slide-content">
-              <Grid
+              {/* <Grid
                 container
                 direction="column"
                 justifyContent="center"
@@ -111,6 +127,51 @@ function BannerSlider() {
                     direction={{ xs: 'column', sm: 'row' }}
                     spacing={2}
                     justifyContent={{ xs: 'flex-start', md: 'center' }}
+                    alignItems="center"
+                  >
+                    <a href={item.buttonLink} className="btn-slide">
+                      {item.buttonText}
+                    </a>
+                    <a href={item.buttonLink} className="btn-slide-1">
+                      {item.buttonText1}
+                    </a>
+                  </Stack>
+                </Grid>
+              </Grid> */}
+
+              <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems={{ xs: 'center', md: 'center' }} // mobile & desktop đều center
+                sx={{
+                  textAlign: { xs: 'center', md: 'center' }, // chữ giữa khi mobile
+                  px: { xs: 2, md: 10, lg: 0 },
+                  py: { xs: 4, md: 8, lg: 0 },
+                }}
+              >
+                <Grid item>
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    fontWeight="bold"
+                    gutterBottom
+                  >
+                    {item.title}
+                  </Typography>
+                </Grid>
+
+                <Grid item>
+                  <Typography variant="body1" mb={4}>
+                    {item.description}
+                  </Typography>
+                </Grid>
+
+                <Grid item>
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    spacing={2}
+                    justifyContent="center" // căn giữa nút
                     alignItems="center"
                   >
                     <a href={item.buttonLink} className="btn-slide">

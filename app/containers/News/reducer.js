@@ -54,7 +54,6 @@ const newsReducer = (state = initialState, action) =>
         draft.error = action.error;
         break;
       case FETCH_NEWS_DETAIL:
-        console.log('reduce');
         draft.loading = true;
         draft.error = null;
         draft.newDetail = null;

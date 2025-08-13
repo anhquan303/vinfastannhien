@@ -41,7 +41,6 @@ function* fetchNewsDetailSaga(action) {
     const newsRef = db.collection('news');
     const q = newsRef.where('slug', '==', action.slug);
     const querySnapshot = yield call([q, q.get]);
-    console.log('querySnapshot', querySnapshot);
     if (querySnapshot.empty) {
       throw new Error('Không tìm thấy tin tức');
     }

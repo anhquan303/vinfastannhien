@@ -5,15 +5,16 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography, Breadcrumbs, Container } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import makeSelectShowroom from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import { showroomList } from './constants';
 import logo from '../../images/logo.png';
 import { fetchShowrooms } from './actions';
 import LoadingScreen from '../../components/Loading';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Link } from 'react-router-dom';
 
 export function Showroom() {
   useInjectReducer({ key: 'showroom', reducer });
@@ -29,7 +30,24 @@ export function Showroom() {
   }, [dispatch]);
 
   return (
-    <div>
+    <Container>
+      <Box
+        mb={2}
+        sx={{
+          marginTop: '2rem'
+        }}
+      >
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          aria-label="breadcrumb"
+          sx={{ '& a': { textDecoration: 'none', color: 'primary.main' } }}
+        >
+          <Link to="/home">Trang chủ</Link>
+          <Typography color="text.primary" fontWeight={600}>
+            Hệ thống cửa hàng
+          </Typography>
+        </Breadcrumbs>
+      </Box>
       <Box
         sx={{
           px: { xs: 2, md: 10 },
@@ -55,6 +73,7 @@ export function Showroom() {
             <LoadingScreen />
           </Box>
         )}
+
         {/* Logo */}
         <Box
           sx={{
@@ -88,7 +107,7 @@ export function Showroom() {
           </Grid>
         </Box>
       </Box>
-    </div>
+    </Container>
   );
 }
 
