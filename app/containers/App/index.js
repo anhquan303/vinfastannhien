@@ -95,7 +95,7 @@ export default function App() {
       {/* Mạng xã hội bên phải */}
       <div className="fixed-social">
         <a
-          href="https://zalo.me"
+          //href="https://zalo.me"
           target="_blank"
           rel="noopener noreferrer"
           title="Zalo"
@@ -103,7 +103,7 @@ export default function App() {
           <SiZalo className="social-icon" />
         </a>
         <a
-          href="https://facebook.com"
+          href="https://www.facebook.com/share/1CS1GFzQsd/?mibextid=wwXIfr"
           target="_blank"
           rel="noopener noreferrer"
           title="Facebook"

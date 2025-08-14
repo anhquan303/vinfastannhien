@@ -77,7 +77,9 @@ function Footer() {
               <Typography sx={{ color: '#FF6600', minWidth: 80 }}>
                 ĐỊA CHỈ:
               </Typography>
-              <Typography>Tổ 11, khu 9B, Bãi Cháy, Thành phố Hạ Long, Tỉnh Quảng Ninh</Typography>
+              <Typography>
+                Tổ 11, khu 9B, Bãi Cháy, Thành phố Hạ Long, Tỉnh Quảng Ninh
+              </Typography>
             </Box>
 
             <Box display="flex" gap={1} mb={1}>
@@ -99,13 +101,23 @@ function Footer() {
                 WEBSITE:
               </Typography>
               <Link
-                href="https://www.vinfastannhien.com"
+                href="https://www.vinfastannhien.vn"
                 target="_blank"
                 rel="noopener"
                 underline="hover"
                 color="inherit"
+                sx={{
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  color: 'white',
+                  transition: 'color 0.3s ease',
+                  '&:hover': {
+                    color: '#ffcc00', // màu khi hover (ví dụ: vàng)
+                  },
+                }}
               >
-                www.vinfastannhien.com
+                www.vinfastannhien.vn
               </Link>
             </Box>
 
@@ -113,7 +125,23 @@ function Footer() {
               <Typography sx={{ color: '#FF6600', minWidth: 80 }}>
                 FANPAGE:
               </Typography>
-              <Typography>954 Cái Dăm</Typography>
+              <Typography
+                component="a"
+                href="https://www.facebook.com/share/1CS1GFzQsd/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  color: 'white',
+                  transition: 'color 0.3s ease',
+                  '&:hover': {
+                    color: '#ffcc00', // màu khi hover (ví dụ: vàng)
+                  },
+                }}
+              >
+                Xe máy điện VinFast An Nhiên - Bãi Cháy
+              </Typography>
             </Box>
           </Grid>
 

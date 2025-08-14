@@ -299,7 +299,7 @@ export default function Detail() {
               </Grid>
             </Box>
 
-            <Grid container spacing={2} mt={3} justifyContent="center">
+            {/* <Grid container spacing={2} mt={3} justifyContent="center">
               {productDetail.imageGallery.map((img, i) => (
                 <Grid item xs={6} sm={3} md={2} key={i}>
                   <Box
@@ -308,6 +308,33 @@ export default function Detail() {
                     width="100%"
                     alt={`img-${i}`}
                   />
+                </Grid>
+              ))}
+            </Grid> */}
+
+            <Grid container spacing={2} mt={3} justifyContent="center">
+              {productDetail.imageGallery.map((img, i) => (
+                <Grid item xs={6} sm={3} md={2.4} key={i}>
+                  <Box
+                    sx={{
+                      height: { xs: 220, sm: 260, md: 360 }, // chiều cao cố định như cụm bên trái
+                      overflow: 'hidden',
+                      borderRadius: 1,
+                      bgcolor: '#fff',
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={img}
+                      alt={`img-${i}`}
+                      sx={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover', // giống bên trái: phủ đầy, cắt tràn
+                        display: 'block',
+                      }}
+                    />
+                  </Box>
                 </Grid>
               ))}
             </Grid>
