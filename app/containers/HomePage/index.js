@@ -53,7 +53,6 @@ export function HomePage({
   const home = useSelector(makeSelectHome());
 
   useEffect(() => {
-    // When initial state username is not null, submit the form to load repos
     if (username && username.trim().length > 0) onSubmitForm();
   }, []);
 
@@ -64,14 +63,14 @@ export function HomePage({
   }, [dispatch]);
 
   const top3Sold = [...productLst]
-    .sort((a, b) => b.sold - a.sold) // sắp xếp giảm dần theo sold
-    .slice(0, 3); // lấy 3 item đầu
+    .sort((a, b) => b.sold - a.sold)
+    .slice(0, 3); // 
 
   const top3New =
     productLst &&
     productLst
-      .filter(product => product.isNew) // lọc sản phẩm mới
-      .slice(0, 3); // lấy 3 item đầu tiên
+      .filter(product => product.isNew) 
+      .slice(0, 3); 
 
   return (
     <article>
@@ -111,77 +110,138 @@ export function HomePage({
           </div>
         </CenteredSection>
 
-        <Box sx={{ overflowX: 'hidden', px: 2 }} className="container">
-          <Grid container spacing={3} justifyContent="center">
-            {top3Sold &&
-              top3Sold.map((product, index) => (
-                <Grid item xs={12} sm={6} md={4} key={index}>
-                  <Card
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' }, 
+            overflowX: { xs: 'hidden', sm: 'auto' },
+            gap: 2,
+            px: 2,
+            py: 3,
+            scrollSnapType: { xs: 'none', sm: 'x mandatory' },
+            WebkitOverflowScrolling: 'touch',
+            padding: '0 20px',
+            justifyContent: { xs: 'stretch', sm: 'center' },
+            alignItems: { xs: 'stretch', sm: 'unset' },
+          }}
+        >
+          {top3Sold &&
+            top3Sold.map((product, index) => (
+              <Grid
+                item
+                xs={12}
+                sm="auto"
+                md="auto"
+                key={index}
+                sx={{ width: { xs: '100%', sm: 'auto' } }}
+              >
+                <Box
+                  sx={{
+                    border: '1px solid #e0e0e0',
+                    borderRadius: 2,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    p: 2,
+                    position: 'relative',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    '&:hover': { boxShadow: 3 },
+                    width: { xs: '100%', sm: 220, md: 240 }, 
+                    maxWidth: { xs: '100%', sm: 280 },
+                  }}
+                >
+                  {product.isNew && (
+                    <Chip
+                      label="NEW"
+                      color="error"
+                      sx={{
+                        position: 'absolute',
+                        top: 10,
+                        right: 10,
+                        fontWeight: 'bold',
+                        '& .MuiChip-label': {
+                          fontSize: '1rem',
+                        },
+                        animation: 'pulseGlow 1.5s infinite',
+                        '@keyframes pulseGlow': {
+                          '0%': {
+                            transform: 'scale(1)',
+                            boxShadow: '0 0 0px rgba(255,0,0,0.7)',
+                          },
+                          '50%': {
+                            transform: 'scale(1.1)',
+                            boxShadow: '0 0 12px rgba(255,0,0,0.9)',
+                          },
+                          '100%': {
+                            transform: 'scale(1)',
+                            boxShadow: '0 0 0px rgba(255,0,0,0.7)',
+                          },
+                        },
+                      }}
+                    />
+                  )}
+
+                  <Box
+                    component="img"
+                    src={product.img}
+                    alt={product.name}
+                    sx={{ width: '100%', height: 'auto', mb: 2 }}
+                  />
+
+                  <Typography
+                    variant="caption"
+                    textTransform="uppercase"
+                    color="gray"
+                  >
+                    Xe máy điện VinFast
+                  </Typography>
+
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    component={Link}
+                    to={`/products/${product.id ||
+                      encodeURIComponent(product.name)}`}
                     sx={{
-                      textAlign: 'center',
-                      borderRadius: 3,
-                      boxShadow: 3,
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      transition: 'transform 0.3s ease',
+                      textDecoration: 'none',
+                      color: '#1976d2',
+                      '&:hover': { textDecoration: 'underline' },
+                    }}
+                  >
+                    {product.name}
+                  </Typography>
+
+                  <Box mb={2}>
+                    {product.oldPrice && (
+                      <Typography
+                        variant="body2"
+                        sx={{ textDecoration: 'line-through', color: 'gray' }}
+                      >
+                        {product.oldPrice.toLocaleString('vi-VN')}đ
+                      </Typography>
+                    )}
+                    <Typography fontWeight="bold" fontSize="18px">
+                      {product.price.toLocaleString('vi-VN')}đ
+                    </Typography>
+                  </Box>
+
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      bgcolor: 'black',
+                      color: 'white',
                       '&:hover': {
-                        transform: 'translateY(-5px)',
+                        bgcolor: '#333',
                       },
                     }}
                   >
-                    <CardMedia
-                      component="img"
-                      image={product.img}
-                      alt={product.name}
-                      sx={{
-                        height: { xs: 180, sm: 220 },
-                        objectFit: 'contain',
-                        mt: 2,
-                        px: 2,
-                      }}
-                    />
-                    <CardContent>
-                      <Typography
-                        variant="subtitle1"
-                        fontWeight="bold"
-                        component={Link}
-                        to={`/products/${product.id ||
-                          encodeURIComponent(product.name)}`}
-                        sx={{
-                          textDecoration: 'none',
-                          color: '#1976d2',
-                          '&:hover': { textDecoration: 'underline' },
-                        }}
-                      >
-                        {product.name}
-                      </Typography>
-                      <Typography
-                        variant="h6"
-                        fontWeight="bold"
-                        color="text.primary"
-                        mt={1}
-                      >
-                        {product.price.toLocaleString('vi-VN')} đ
-                      </Typography>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          mt: 2,
-                          borderRadius: 2,
-                          fontSize: { xs: 14, sm: 16 },
-                          py: 1.5,
-                        }}
-                        fullWidth
-                      >
-                        MUA NGAY
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-          </Grid>
+                    MUA NGAY &nbsp; &gt;
+                  </Button>
+                </Box>
+              </Grid>
+            ))}
         </Box>
 
         <CenteredSection style={{ padding: '0 20px' }}>
@@ -195,26 +255,34 @@ export function HomePage({
 
           <Box
             sx={{
-              overflowX: 'auto',
               display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' }, 
+              overflowX: { xs: 'hidden', sm: 'auto' }, 
               gap: 2,
               px: 2,
               py: 3,
-              scrollSnapType: 'x mandatory',
+              scrollSnapType: { xs: 'none', sm: 'x mandatory' },
               WebkitOverflowScrolling: 'touch',
               padding: '0 20px',
-              justifyContent: 'center',
+              justifyContent: { xs: 'stretch', sm: 'center' },
+              alignItems: { xs: 'stretch', sm: 'unset' },
             }}
-            className="container"
           >
             {top3New &&
               top3New.map((product, index) => (
-                <Grid item xs={12} sm={6} md={3} key={index}>
+                <Grid
+                  item
+                  xs={12}
+                  sm="auto"
+                  md="auto"
+                  key={index}
+                  sx={{ width: { xs: '100%', sm: 'auto' } }} 
+                >
                   <Box
                     sx={{
                       border: '1px solid #e0e0e0',
                       borderRadius: 2,
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                       p: 2,
                       position: 'relative',
                       height: '100%',
@@ -222,8 +290,8 @@ export function HomePage({
                       flexDirection: 'column',
                       justifyContent: 'space-between',
                       '&:hover': { boxShadow: 3 },
-                      width: { xs: '100%', sm: 220, md: 240 }, // responsive width
-                      maxWidth: 280,
+                      width: { xs: '100%', sm: 220, md: 240 },
+                      maxWidth: { xs: '100%', sm: 280 },
                     }}
                   >
                     {product.isNew && (
