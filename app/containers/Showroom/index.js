@@ -30,7 +30,7 @@ export function Showroom() {
   }, [dispatch]);
 
   return (
-    <Container>
+    <Container style={{marginBottom: "2rem"}}>
       <Box
         mb={2}
         sx={{

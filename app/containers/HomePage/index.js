@@ -25,17 +25,33 @@ import BannerSlider from '../../components/BannerSlider';
 import './style.css';
 import {
   Grid,
-  Card,
-  CardContent,
-  CardMedia,
   Typography,
   Button,
   Box,
   Chip,
 } from '@mui/material';
-import { explore_products, services } from './constants';
+import { services } from './constants';
 import { Link } from 'react-router-dom';
 import LoadingScreen from '../../components/Loading';
+import evoGrandLiteImg from '../../images/EvoGrandLite.jpg';
+import motioImg from '../../images/MotioS.png';
+import evoLiteNeoImg from '../../images/EvoLiteNeo.jpg';
+import evoNeoImg from '../../images/EvoNeo.png';
+//
+// import evo200LiteImg from '../../images/Evo200.jpg';
+import evo200Img from '../../images/Evo200.jpg';
+import evoGrandImg from '../../images/EvoGrand.jpg';
+import felizNeoImg from '../../images/FelizNeo.jpg';
+import felizSImg from '../../images/FelizS.png';
+//
+// import klaraS2Img from '../../images/FelizS.png';
+import ventoNeoImg from '../../images/VentoNeo.jpg';
+import klaraNeoImg from '../../images/KiraNeo.png';
+//
+// import ventoSImg from '../../images/KiraNeo.png';
+import theonSImg from '../../images/TheonS.png';
+
+import ProductStripFullWidthV5 from '../../components/HorizontalImageStrip';
 
 const key = 'home';
 
@@ -69,8 +85,8 @@ export function HomePage({
   const top3New =
     productLst &&
     productLst
-      .filter(product => product.isNew) 
-      .slice(0, 3); 
+      .filter(product => product.isNew)
+      .slice(0, 3);
 
   return (
     <article>
@@ -113,7 +129,7 @@ export function HomePage({
         <Box
           sx={{
             display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' }, 
+            flexDirection: { xs: 'column', sm: 'row' },
             overflowX: { xs: 'hidden', sm: 'auto' },
             gap: 2,
             px: 2,
@@ -147,7 +163,7 @@ export function HomePage({
                     flexDirection: 'column',
                     justifyContent: 'space-between',
                     '&:hover': { boxShadow: 3 },
-                    width: { xs: '100%', sm: 220, md: 240 }, 
+                    width: { xs: '100%', sm: 220, md: 240 },
                     maxWidth: { xs: '100%', sm: 280 },
                   }}
                 >
@@ -256,8 +272,8 @@ export function HomePage({
           <Box
             sx={{
               display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' }, 
-              overflowX: { xs: 'hidden', sm: 'auto' }, 
+              flexDirection: { xs: 'column', sm: 'row' },
+              overflowX: { xs: 'hidden', sm: 'auto' },
               gap: 2,
               px: 2,
               py: 3,
@@ -276,7 +292,7 @@ export function HomePage({
                   sm="auto"
                   md="auto"
                   key={index}
-                  sx={{ width: { xs: '100%', sm: 'auto' } }} 
+                  sx={{ width: { xs: '100%', sm: 'auto' } }}
                 >
                   <Box
                     sx={{
@@ -395,7 +411,7 @@ export function HomePage({
               Dịch vụ chuyên nghiệp tại Vinfast An Nhiên
             </Typography>
 
-            <Grid container spacing={4} justifyContent="center">
+            <Grid container spacing={4} justifyContent="center" style={{ marginBottom: "2rem" }}>
               {services.map((service, index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <Box>
@@ -424,6 +440,24 @@ export function HomePage({
                 </Grid>
               ))}
             </Grid>
+            <ProductStripFullWidthV5
+              products={[
+                { id: '1', slug: '1', image: motioImg, name: 'Motio' },
+                { id: '2', image: evoLiteNeoImg, name: 'EVO Lite Neo' },
+                { id: '3', image: evoNeoImg, name: 'EVO Neo' },
+                // { id: '4', image: evo200LiteImg, name: 'Evo200 Lite' },
+                { id: '5', image: evo200Img, name: 'EVO 200' },
+                { id: '6', image: evoGrandLiteImg, name: 'EVO Grand Lite' },
+                { id: '7', image: evoGrandImg, name: 'Evo Grand' },
+                { id: '8', image: felizNeoImg, name: 'Feliz Neo' },
+                { id: '9', image: felizSImg, name: 'Feliz S' },
+                // { id: '10', image: klaraS2Img, name: 'Klara S2' },
+                { id: '11', image: ventoNeoImg, name: 'Vento Neo' },
+                { id: '12', image: klaraNeoImg, name: 'Klara Neo' },
+                // { id: '13', image: ventoSImg, name: 'Vento S' },
+                { id: '14', image: theonSImg, name: 'Theon S' },
+              ]}
+            />
           </Box>
         </CenteredSection>
       </div>

@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -25,6 +25,8 @@ import {
   Pagination,
   Container,
   Breadcrumbs,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import makeSelectProducts from './selectors';
@@ -34,13 +36,28 @@ import { fetchProducts } from './actions';
 import LoadingScreen from '../../components/Loading';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
-export function Products() {
+export function Products({ perPageMap }) {
   useInjectReducer({ key: 'products', reducer });
   useInjectSaga({ key: 'products', saga });
-
+  const theme = useTheme();
   const dispatch = useDispatch();
   const productss = useSelector(makeSelectProducts());
-  const PRODUCTS_PER_PAGE = 6;
+  const upSM = useMediaQuery(theme.breakpoints.up('sm'), { noSsr: true });
+  const upMD = useMediaQuery(theme.breakpoints.up('md'), { noSsr: true });
+  const upLG = useMediaQuery(theme.breakpoints.up('lg'), { noSsr: true });
+  const upXL = useMediaQuery(theme.breakpoints.up('xl'), { noSsr: true });
+
+  // Mapping mặc định (đổi theo layout của bạn)
+  const cfg = { xs: 4, sm: 6, md: 8, lg: 12, xl: 12, ...(perPageMap || {}) };
+
+  // Tính PRODUCTS_PER_PAGE ngay trong file
+  const PRODUCTS_PER_PAGE = useMemo(() => {
+    if (upXL) return cfg.xl;
+    if (upLG) return cfg.lg;
+    if (upMD) return cfg.md;
+    if (upSM) return cfg.sm;
+    return cfg.xs;
+  }, [upXL, upLG, upMD, upSM, cfg]);
 
   const { productLst, loading } = productss;
 
