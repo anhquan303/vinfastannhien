@@ -70,11 +70,35 @@ export function Products({ perPageMap }) {
 
   // const sortedProducts = [];
 
-  const sortedProducts = [...productLst].sort((a, b) => {
-    if (sort === 'price-asc') return a.price - b.price;
-    if (sort === 'price-desc') return b.price - a.price;
-    return 0;
-  });
+  const sortedProducts = useMemo(() => {
+    const copy = [...productLst];
+
+    if (sort === 'price-asc') {
+      return copy.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+    }
+    if (sort === 'price-desc') {
+      return copy.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+    }
+
+    // DEFAULT: ưu tiên NEW lên đầu
+    return copy.sort((a, b) => {
+      const aNew = !!a.isNew;
+      const bNew = !!b.isNew;
+      if (aNew !== bNew) return bNew - aNew; // true lên trước
+
+      // tie-breaker (tuỳ bạn): mới hơn trước, rồi theo tên
+      if (a.createdAt && b.createdAt) {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      }
+      return String(a.name || '').localeCompare(String(b.name || ''));
+    });
+  }, [productLst, sort]);
+
+  // const sortedProducts = [...productLst].sort((a, b) => {
+  //   if (sort === 'price-asc') return a.price - b.price;
+  //   if (sort === 'price-desc') return b.price - a.price;
+  //   return 0;
+  // });
 
   // Tính tổng số trang
   const totalPages = Math.ceil(sortedProducts.length / PRODUCTS_PER_PAGE);

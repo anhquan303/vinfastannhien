@@ -1,31 +1,44 @@
-// ProductStripFullWidthV5.jsx
 import React, { useRef } from 'react';
 import { Box } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 
 export default function ProductStripFullWidthV5({
   products,
-  basePath = '/products', // Route: /products/:slug
+  basePath = '/products',
 }) {
   const history = useHistory();
   const stripRef = useRef(null);
 
   // guard kéo vs click
   const movedRef = useRef(false);
+
+  // drag with mouse
+  const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
+  const startScrollLeftRef = useRef(0);
 
   // --- DESKTOP: chuột ---
   const onMouseDown = e => {
+    if (!stripRef.current) return;
+    isDraggingRef.current = true;
     startXRef.current = e.clientX;
+    startScrollLeftRef.current = stripRef.current.scrollLeft;
     movedRef.current = false;
+    stripRef.current.style.cursor = 'grabbing';
   };
   const onMouseMove = e => {
-    // chỉ khi đang giữ chuột (buttons=1)
-    if (e.buttons !== 1) return;
-    if (Math.abs(e.clientX - startXRef.current) > 6) movedRef.current = true;
+    if (!isDraggingRef.current || !stripRef.current) return;
+    const dx = e.clientX - startXRef.current;
+    stripRef.current.scrollLeft = startScrollLeftRef.current - dx;
+    if (Math.abs(dx) > 6) movedRef.current = true;
+  };
+  const stopDrag = () => {
+    if (!stripRef.current) return;
+    isDraggingRef.current = false;
+    stripRef.current.style.cursor = '';
   };
 
-  // --- MOBILE: cảm ứng ---
+  // --- MOBILE: cảm ứng (chỉ để nhận biết đã kéo, scroll là native) ---
   const onTouchStart = e => {
     if (!e.touches?.[0]) return;
     startXRef.current = e.touches[0].clientX;
@@ -33,9 +46,8 @@ export default function ProductStripFullWidthV5({
   };
   const onTouchMove = e => {
     if (!e.touches?.[0]) return;
-    if (Math.abs(e.touches[0].clientX - startXRef.current) > 6) {
-      movedRef.current = true;
-    }
+    const dx = e.touches[0].clientX - startXRef.current;
+    if (Math.abs(dx) > 6) movedRef.current = true;
   };
 
   // lăn chuột dọc => cuộn ngang (desktop)
@@ -51,8 +63,8 @@ export default function ProductStripFullWidthV5({
   const go = slugOrId => {
     if (movedRef.current) {
       movedRef.current = false;
-      return;
-    } // vừa kéo -> không click
+      return; // vừa kéo -> không click
+    }
     const slug = String(slugOrId);
     history.push(`${basePath}/${encodeURIComponent(slug)}`);
   };
@@ -60,8 +72,12 @@ export default function ProductStripFullWidthV5({
   return (
     <Box
       ref={stripRef}
+      role="region"
+      aria-label="Danh sách sản phẩm trượt ngang"
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
+      onMouseUp={stopDrag}
+      onMouseLeave={stopDrag}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onWheel={onWheel}
@@ -89,12 +105,16 @@ export default function ProductStripFullWidthV5({
 
         px: 2,
         py: 2,
+
+        // ✅ CHO PHÉP VUỐT NGANG TRÊN MOBILE
+        touchAction: { xs: 'pan-x', sm: 'auto' }, // trước đây 'pan-y' làm chặn vuốt ngang
+        overscrollBehaviorX: 'contain', // tránh giật lùi trang trên iOS/Android
+        userSelect: 'none',
         cursor: { md: 'grab' },
-        touchAction: 'pan-y', // vẫn cuộn dọc trang
       }}
     >
       {products.map(p => {
-        const slug = p.slug || p.id; // ưu tiên slug
+        const slug = p.slug || p.id;
         return (
           <Box
             key={slug}
@@ -131,7 +151,6 @@ export default function ProductStripFullWidthV5({
                 '&:focus-visible': {
                   boxShadow: '0 0 0 3px rgba(255,44,139,0.35)',
                 },
-                userSelect: 'none',
               }}
             >
               <Box
@@ -143,7 +162,7 @@ export default function ProductStripFullWidthV5({
                   width: '100%',
                   height: 'auto',
                   display: 'block',
-                  pointerEvents: 'none', // để click/tap đi vào Box cha
+                  pointerEvents: 'none', // để tap/click đi vào Box cha
                 }}
               />
             </Box>

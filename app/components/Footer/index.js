@@ -78,7 +78,7 @@ function Footer() {
                 ĐỊA CHỈ:
               </Typography>
               <Typography>
-                Tổ 11, khu 9B, Bãi Cháy, Thành phố Hạ Long, Tỉnh Quảng Ninh
+                Số nhà 954 Hạ Long, Phường Bãi Cháy, Thành phố Hạ Long, Tỉnh Quảng Ninh
               </Typography>
             </Box>
 
@@ -86,14 +86,14 @@ function Footer() {
               <Typography sx={{ color: '#FF6600', minWidth: 80 }}>
                 ĐIỆN THOẠI:
               </Typography>
-              <Typography>0988062969</Typography>
+              <Typography>0396959876</Typography>
             </Box>
 
             <Box display="flex" gap={1} mb={1}>
               <Typography sx={{ color: '#FF6600', minWidth: 80 }}>
                 EMAIL:
               </Typography>
-              <Typography>quangphu.qnvn@gmail.com</Typography>
+              <Typography>Annhienbaichay@gmail.com</Typography>
             </Box>
 
             <Box display="flex" gap={1} mb={1}>
