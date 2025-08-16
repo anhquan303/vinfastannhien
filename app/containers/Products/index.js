@@ -29,12 +29,12 @@ import {
   useTheme,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import makeSelectProducts from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import { fetchProducts } from './actions';
 import LoadingScreen from '../../components/Loading';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 export function Products({ perPageMap }) {
   useInjectReducer({ key: 'products', reducer });

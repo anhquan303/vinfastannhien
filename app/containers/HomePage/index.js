@@ -23,13 +23,7 @@ import reducer from './reducer';
 import saga from './saga';
 import BannerSlider from '../../components/BannerSlider';
 import './style.css';
-import {
-  Grid,
-  Typography,
-  Button,
-  Box,
-  Chip,
-} from '@mui/material';
+import { Grid, Typography, Button, Box, Chip } from '@mui/material';
 import { services } from './constants';
 import { Link } from 'react-router-dom';
 import LoadingScreen from '../../components/Loading';
@@ -78,15 +72,10 @@ export function HomePage({
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const top3Sold = [...productLst]
-    .sort((a, b) => b.sold - a.sold)
-    .slice(0, 3); // 
+  const top3Sold = [...productLst].sort((a, b) => b.sold - a.sold).slice(0, 3); //
 
   const top3New =
-    productLst &&
-    productLst
-      .filter(product => product.isNew)
-      .slice(0, 3);
+    productLst && productLst.filter(product => product.isNew).slice(0, 3);
 
   return (
     <article>
@@ -411,7 +400,12 @@ export function HomePage({
               Dịch vụ chuyên nghiệp tại Vinfast An Nhiên
             </Typography>
 
-            <Grid container spacing={4} justifyContent="center" style={{ marginBottom: "2rem" }}>
+            <Grid
+              container
+              spacing={4}
+              justifyContent="center"
+              style={{ marginBottom: '2rem' }}
+            >
               {services.map((service, index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <Box>

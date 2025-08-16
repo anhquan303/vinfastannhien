@@ -7,14 +7,14 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { Box, Grid, Typography, Breadcrumbs, Container } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Link } from 'react-router-dom';
 import makeSelectShowroom from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import logo from '../../images/logo.png';
 import { fetchShowrooms } from './actions';
 import LoadingScreen from '../../components/Loading';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { Link } from 'react-router-dom';
 
 export function Showroom() {
   useInjectReducer({ key: 'showroom', reducer });
@@ -30,11 +30,11 @@ export function Showroom() {
   }, [dispatch]);
 
   return (
-    <Container style={{marginBottom: "2rem"}}>
+    <Container style={{ marginBottom: '2rem' }}>
       <Box
         mb={2}
         sx={{
-          marginTop: '2rem'
+          marginTop: '2rem',
         }}
       >
         <Breadcrumbs
