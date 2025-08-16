@@ -335,6 +335,15 @@ import anhbia3_mobile from '../../images/anhbia3_giua.png';
 
 const sliderData = [
   {
+    image: anhbia1,
+    imageMobile: anhbia3_mobile,
+    title: 'VINFAST EVO GRAND',
+    description: 'VinFast Evo Grand – không chỉ là phương tiện, mà là phong cách sống. Một lựa chọn dành cho những ai yêu sự nhẹ nhàng, hiện đại và tự do. Hãy cùng khám phá xem lựa chọn thông minh cho một cuộc sống hiện đại.',
+    buttonText: 'Xem chi tiết',
+    buttonText1: 'Xem thêm các sản phẩm khác',
+    buttonLink: '/product',
+  },
+  {
     image: anhbia5,
     imageMobile: anhbia1_mobile,
     title: 'VinFast Motio',
@@ -352,15 +361,7 @@ const sliderData = [
     buttonText1: 'Xem thêm các sản phẩm khác',
     buttonLink: '/product',
   },
-  {
-    image: anhbia1,
-    imageMobile: anhbia3_mobile,
-    title: 'VINFAST EVO GRAND',
-    description: 'VinFast Evo Grand – không chỉ là phương tiện, mà là phong cách sống. Một lựa chọn dành cho những ai yêu sự nhẹ nhàng, hiện đại và tự do. Hãy cùng khám phá xem lựa chọn thông minh cho một cuộc sống hiện đại.',
-    buttonText: 'Xem chi tiết',
-    buttonText1: 'Xem thêm các sản phẩm khác',
-    buttonLink: '/product',
-  },
+  
 ];
 
 function BannerSlider() {
