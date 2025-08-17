@@ -344,15 +344,6 @@ const sliderData = [
     buttonLink: '/product',
   },
   {
-    image: anhbia5,
-    imageMobile: anhbia1_mobile,
-    title: 'VinFast Motio',
-    description: 'VinFast Motio là một sự lựa chọn nổi bật với thiết kế trẻ trung, tính năng vượt trội và giá cả phải chăng. Hãy cùng khám phá lý do tại sao xe máy điện VinFast Motio lại trở thành chiếc xe cho học sinh lý tưởng.',
-    buttonText: 'Khám chi tiết',
-    buttonText1: 'Xem thêm các sản phẩm khác',
-    buttonLink: '/product',
-  },
-  {
     image: anhbia2,
     imageMobile: anhbia2_mobile,
     title: 'VINFAST VENTO S',
@@ -361,7 +352,15 @@ const sliderData = [
     buttonText1: 'Xem thêm các sản phẩm khác',
     buttonLink: '/product',
   },
-  
+    {
+    image: anhbia5,
+    imageMobile: anhbia1_mobile,
+    title: 'VinFast Motio',
+    description: 'VinFast Motio là một sự lựa chọn nổi bật với thiết kế trẻ trung, tính năng vượt trội và giá cả phải chăng. Hãy cùng khám phá lý do tại sao xe máy điện VinFast Motio lại trở thành chiếc xe cho học sinh lý tưởng.',
+    buttonText: 'Khám chi tiết',
+    buttonText1: 'Xem thêm các sản phẩm khác',
+    buttonLink: '/product',
+  },
 ];
 
 function BannerSlider() {
@@ -432,7 +431,7 @@ function BannerSlider() {
                     }
                   : {
                       backgroundSize: 'cover',
-                      backgroundPosition: 'center -60px',
+                      backgroundPosition: 'center -50px',
                     }),
                 backgroundRepeat: 'no-repeat',
                 height: isMobile ? '620px' : '600px',
@@ -490,6 +489,7 @@ function BannerSlider() {
                         lineHeight: { xs: 1.05, md: 1.1 },
                         textShadow: '0 2px 6px rgba(0,0,0,0.4)',
                         m: 0,
+                        color: index == 2 && !isMobile && '#000'  
                       }}
                     >
                       {item.title}
@@ -503,6 +503,7 @@ function BannerSlider() {
                       sx={{
                         opacity: 0.95,
                         textShadow: '0 1px 3px rgba(0,0,0,0.35)',
+                        color: index == 2 && !isMobile && '#000' 
                       }}
                     >
                       {item.description}

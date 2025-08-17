@@ -72,10 +72,13 @@ export function HomePage({
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const top3Sold = [...productLst].sort((a, b) => b.sold - a.sold).slice(0, 3); //
+  //const top3Sold = [...productLst].sort((a, b) => b.sold - a.sold).slice(0, 3); //
+  const top3Sold = (productLst || []).filter(p => (p.price ?? 0) < 20_000_000);
 
-  const top3New =
-    productLst && productLst.filter(product => product.isNew).slice(0, 3);
+  // const top3New =
+  //   productLst && productLst.filter(product => product.isNew).slice(0, 3);
+
+  const top3New = (productLst || []).filter(p => (p.price ?? 0) > 30_000_000); //lọc trên 30m
 
   return (
     <article>
