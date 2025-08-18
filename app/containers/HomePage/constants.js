@@ -14,40 +14,6 @@ import tool3 from '../../images/tool3.png';
 import tool4 from '../../images/tool4.png';
 
 export const CHANGE_USERNAME = 'boilerplate/Home/CHANGE_USERNAME';
-
-export const explore_products = [
-  {
-    name: 'Xe máy điện VinFast Motio',
-    price: '12,000,000 đ',
-    image: '/images/vinfast-motio.png',
-  },
-  {
-    name: 'Xe máy điện VinFast Evo Lite Neo',
-    price: '14.400.000 đ',
-    image: '/images/vinfast-evo-lite-neo.png',
-  },
-  {
-    name: 'Xe máy điện VinFast Evo Neo',
-    price: '17.800.000 đ',
-    image: '/images/vinfast-evo-neo.png',
-  },
-  {
-    name: 'Xe máy điện VinFast Motio',
-    price: '12,000,000 đ',
-    image: '/images/vinfast-motio.png',
-  },
-  {
-    name: 'Xe máy điện VinFast Evo Lite Neo',
-    price: '14.400.000 đ',
-    image: '/images/vinfast-evo-lite-neo.png',
-  },
-  {
-    name: 'Xe máy điện VinFast Evo Neo',
-    price: '17.800.000 đ',
-    image: '/images/vinfast-evo-neo.png',
-  },
-];
-
 export const services = [
   {
     icon: tool1,
@@ -78,3 +44,7 @@ export const services = [
 export const FETCH_PRODUCTS = 'app/Home/FETCH_PRODUCTS';
 export const FETCH_PRODUCTS_SUCCESS = 'app/Home/FETCH_PRODUCTS_SUCCESS';
 export const FETCH_PRODUCTS_FAILURE = 'app/Home/FETCH_PRODUCTS_FAILURE';
+
+export const FETCH_NEWS = 'app/Home/FETCH_NEWS';
+export const FETCH_NEWS_SUCCESS = 'app/Home/FETCH_NEWS_SUCCESS';
+export const FETCH_NEWS_FAILURE = 'app/Home/FETCH_NEWS_FAILURE';

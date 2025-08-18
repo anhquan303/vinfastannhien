@@ -10,6 +10,9 @@
 import produce from 'immer';
 import {
   CHANGE_USERNAME,
+  FETCH_NEWS,
+  FETCH_NEWS_FAILURE,
+  FETCH_NEWS_SUCCESS,
   FETCH_PRODUCTS,
   FETCH_PRODUCTS_FAILURE,
   FETCH_PRODUCTS_SUCCESS,
@@ -20,6 +23,7 @@ export const initialState = {
   username: '',
   productLst: [],
   loading: false,
+  news: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -39,6 +43,18 @@ const homeReducer = (state = initialState, action) =>
         draft.productLst = action.productLst;
         break;
       case FETCH_PRODUCTS_FAILURE:
+        draft.loading = false;
+        draft.error = action.error;
+        break;
+      case FETCH_NEWS:
+        draft.loading = true;
+        draft.error = null;
+        break;
+      case FETCH_NEWS_SUCCESS:
+        draft.loading = false;
+        draft.news = action.news;
+        break;
+      case FETCH_NEWS_FAILURE:
         draft.loading = false;
         draft.error = action.error;
         break;

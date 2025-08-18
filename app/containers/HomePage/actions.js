@@ -17,6 +17,9 @@
 
 import {
   CHANGE_USERNAME,
+  FETCH_NEWS,
+  FETCH_NEWS_FAILURE,
+  FETCH_NEWS_SUCCESS,
   FETCH_PRODUCTS,
   FETCH_PRODUCTS_FAILURE,
   FETCH_PRODUCTS_SUCCESS,
@@ -47,5 +50,19 @@ export const fetchProductsSuccess = productLst => ({
 
 export const fetchProductsFailure = error => ({
   type: FETCH_PRODUCTS_FAILURE,
+  error,
+});
+
+export const fetchNews = () => ({
+  type: FETCH_NEWS,
+});
+
+export const fetchNewsSuccess = news => ({
+  type: FETCH_NEWS_SUCCESS,
+  news,
+});
+
+export const fetchNewsFailure = error => ({
+  type: FETCH_NEWS_FAILURE,
   error,
 });

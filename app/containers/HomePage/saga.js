@@ -8,8 +8,8 @@ import { reposLoaded, repoLoadingError } from 'containers/App/actions';
 import request from 'utils/request';
 import { makeSelectUsername } from 'containers/HomePage/selectors';
 import { db } from '../../firebaseConfig';
-import { FETCH_PRODUCTS } from './constants';
-import { fetchProductsFailure, fetchProductsSuccess } from './actions';
+import { FETCH_NEWS, FETCH_PRODUCTS } from './constants';
+import { fetchNewsFailure, fetchNewsSuccess, fetchProductsFailure, fetchProductsSuccess } from './actions';
 
 /**
  * Github repos request/response handler
@@ -41,6 +41,19 @@ export function* fetchProductsSaga() {
   }
 }
 
+export function* fetchNewsSaga() {
+  try {
+    const snapshot = yield call([db.collection('news'), 'get']);
+    const news = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    yield put(fetchNewsSuccess(news));
+  } catch (error) {
+    yield put(fetchNewsFailure(error.message));
+  }
+}
+
 /**
  * Root saga manages watcher lifecycle
  */
@@ -51,4 +64,5 @@ export default function* githubData() {
   // It will be cancelled automatically on component unmount
   yield takeLatest(LOAD_REPOS, getRepos);
   yield takeLatest(FETCH_PRODUCTS, fetchProductsSaga);
+  yield takeLatest(FETCH_NEWS, fetchNewsSaga);
 }
