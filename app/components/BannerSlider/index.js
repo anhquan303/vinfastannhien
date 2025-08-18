@@ -471,7 +471,7 @@ function BannerSlider() {
                   backdropFilter: isMobile ? 'blur(3px)' : 'none',
                   borderRadius: isMobile ? 16 : 0,
                   padding: isMobile ? '12px 14px' : 0,
-                  boxShadow: isMobile ? '0 8px 24px rgba(0,0,0,0.25)' : 'none',
+                  //boxShadow: isMobile ? '0 8px 24px rgba(0,0,0,0.25)' : 'none',
                 }}
               >
                 <Grid
@@ -487,9 +487,9 @@ function BannerSlider() {
                       gutterBottom
                       sx={{
                         lineHeight: { xs: 1.05, md: 1.1 },
-                        textShadow: '0 2px 6px rgba(0,0,0,0.4)',
+                        //textShadow: '0 2px 6px rgba(0,0,0,0.4)',
                         m: 0,
-                        color: index == 2 && !isMobile && '#000'  
+                        color: index == 2 && !isMobile && '#3C3C3C'  
                       }}
                     >
                       {item.title}
@@ -502,8 +502,8 @@ function BannerSlider() {
                       mb={isMobile ? 2 : 3}
                       sx={{
                         opacity: 0.95,
-                        textShadow: '0 1px 3px rgba(0,0,0,0.35)',
-                        color: index == 2 && !isMobile && '#000' 
+                        //textShadow: '0 1px 3px rgba(0,0,0,0.35)',
+                        color: index == 2 && !isMobile && '#3C3C3C' 
                       }}
                     >
                       {item.description}

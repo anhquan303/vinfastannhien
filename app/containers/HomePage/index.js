@@ -173,9 +173,6 @@ export function HomePage({
     };
   };
 
-  console.log('news: ', news);
-  console.log('top3News: ', top3News);
-
   return (
     <article>
       {loading && (
