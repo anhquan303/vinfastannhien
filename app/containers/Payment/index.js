@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -23,29 +23,61 @@ import {
   Grid,
   Typography,
   TextField,
-  FormControl,
+  DialogTitle,
   MenuItem,
   Radio,
   RadioGroup,
   FormControlLabel,
-  FormLabel,
+  Dialog,
   Button,
+  Snackbar,
+  Alert,
+  IconButton,
+  DialogContent,
+  DialogActions,
+  Stack,
+  Tooltip,
 } from '@mui/material';
 import { useLocation } from 'react-router-dom';
-import { fetchDistricts, fetchProvinces, fetchWards } from './actions';
+import {
+  confirmPaidRequest,
+  fetchDistricts,
+  fetchProvinces,
+  fetchWards,
+  placeOrderRequest,
+} from './actions';
+import CloseIcon from '@mui/icons-material/Close';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 export function Payment() {
   useInjectReducer({ key: 'payment', reducer });
   useInjectSaga({ key: 'payment', saga });
 
+  const [qrOpen, setQrOpen] = useState(false);
   const [selectedProvince, setSelectedProvince] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedWard, setSelectedWard] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [note, setNote] = useState('');
+  const [method, setMethod] = useState('bank');
+  const [toast, setToast] = useState({ open: false, type: 'success', msg: '' });
+  const openToast = (msg, type = 'success') =>
+    setToast({ open: true, type, msg });
 
   const dispatch = useDispatch();
   const payment = useSelector(makeSelectPayment());
 
-  const { provinces, districts, wards } = payment;
+  const {
+    provinces,
+    districts,
+    wards,
+    placing,
+    lastOrder,
+    confirming,
+  } = payment;
 
   const location = useLocation();
   const { cartItems = [], totalPrice = 0 } = location.state || {};
@@ -74,6 +106,84 @@ export function Payment() {
     }
   }, [selectedDistrict]);
 
+  const onPlaceOrder = () => {
+    if (
+      !name ||
+      !phone ||
+      !selectedProvince ||
+      !selectedDistrict ||
+      !selectedWard ||
+      !address ||
+      !email
+    ) {
+      openToast('Vui lòng nhập đủ thông tin.', 'error');
+      return;
+    }
+    if (!cartItems.length) {
+      openToast('Giỏ hàng trống.', 'error');
+      return;
+    }
+
+    const cityName =
+      (provinces || []).find(p => String(p.code) === String(selectedProvince))
+        ?.name || '';
+    const districtName =
+      (districts || []).find(d => String(d.code) === String(selectedDistrict))
+        ?.name || '';
+    const wardName =
+      (wards || []).find(w => String(w.code) === String(selectedWard))?.name ||
+      '';
+
+    const shipping = {
+      city: cityName,
+      district: districtName,
+      ward: wardName,
+      address: (address || '').trim(),
+    };
+
+    dispatch(
+      placeOrderRequest({
+        method,
+        items: cartItems.map(i => ({
+          id: i.id,
+          name: i.name,
+          qty: i.quantityCart,
+          price: i.price,
+        })),
+        amount: totalPrice,
+        customer: { name, phone, email /* , email */ },
+        shipping,
+        note,
+      }),
+    );
+  };
+
+  const onConfirmPaid = () => {
+    if (!lastOrder?.orderId) return;
+    dispatch(
+      confirmPaidRequest({
+        orderId: lastOrder.orderId,
+        qrUrl: lastOrder.qrUrl,
+      }),
+    );
+    openToast('Đang gửi email xác nhận...', 'info');
+  };
+
+  // const qrOpen = Boolean(
+  //   lastOrder?.qrUrl && lastOrder?.payment?.method === 'bank',
+  // );
+
+  useEffect(() => {
+    if (lastOrder?.qrUrl && lastOrder?.payment?.method === 'bank') {
+      setQrOpen(true);
+    }
+  }, [lastOrder]);
+
+  const handleCloseQr = (event, reason) => {
+    if (reason === 'backdropClick' || reason === 'escapeKeyDown') return; // chặn đóng ngoài ý muốn
+    setQrOpen(false);
+  };
+
   return (
     <Box px={{ xs: 2, md: 8 }} py={4}>
       <Typography variant="body2" mb={2}>
@@ -84,8 +194,30 @@ export function Payment() {
           <Typography variant="h6" color="error" fontWeight="bold" gutterBottom>
             THÔNG TIN THANH TOÁN
           </Typography>
-          <TextField label="Họ và tên" fullWidth required sx={{ mb: 2 }} />
-          <TextField label="Số điện thoại" fullWidth required sx={{ mb: 2 }} />
+          <TextField
+            label="Họ và tên"
+            fullWidth
+            required
+            sx={{ mb: 2 }}
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+          <TextField
+            label="Số điện thoại"
+            fullWidth
+            required
+            sx={{ mb: 2 }}
+            value={phone}
+            onChange={e => setPhone(e.target.value)}
+          />
+          <TextField
+            label="Email"
+            type="email"
+            fullWidth
+            sx={{ mb: 2 }}
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
           <Grid container spacing={2}>
             <Grid item xs={12}>
               {/* <TextField
@@ -120,6 +252,7 @@ export function Payment() {
                 label="Chọn Quận/Huyện"
                 fullWidth
                 select
+                value={selectedDistrict}
                 SelectProps={{ native: true }}
                 disabled={!selectedProvince}
                 onChange={e => {
@@ -138,9 +271,10 @@ export function Payment() {
                 label="Chọn Phường/Xã"
                 fullWidth
                 select
+                value={selectedWard}
                 SelectProps={{ native: true }}
                 disabled={!selectedDistrict}
-                 onChange={e => {
+                onChange={e => {
                   setSelectedWard(e.target.value);
                 }}
               >
@@ -152,7 +286,14 @@ export function Payment() {
               </TextField>
             </Grid>
           </Grid>
-          <TextField label="Địa chỉ" fullWidth required sx={{ my: 2 }} />
+          <TextField
+            label="Địa chỉ"
+            fullWidth
+            required
+            sx={{ my: 2 }}
+            value={address}
+            onChange={e => setAddress(e.target.value)}
+          />
 
           <Typography variant="h6" color="error" fontWeight="bold" gutterBottom>
             THÔNG TIN BỔ SUNG
@@ -162,6 +303,8 @@ export function Payment() {
             fullWidth
             multiline
             rows={3}
+            value={note}
+            onChange={e => setNote(e.target.value)}
             placeholder="Ghi chú về đơn hàng, ví dụ thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn."
           />
         </Grid>
@@ -216,8 +359,15 @@ export function Payment() {
               />
             </RadioGroup>
 
-            <Button variant="contained" color="error" fullWidth sx={{ mt: 2 }}>
-              ĐẶT HÀNG
+            <Button
+              variant="contained"
+              color="error"
+              fullWidth
+              sx={{ mt: 2 }}
+              onClick={onPlaceOrder}
+              disabled={placing}
+            >
+              {placing ? 'ĐANG XỬ LÝ...' : 'ĐẶT HÀNG'}
             </Button>
 
             <Typography variant="caption" mt={2} display="block">
@@ -228,6 +378,84 @@ export function Payment() {
           </Box>
         </Grid>
       </Grid>
+
+      {/* Modal QR */}
+      <Dialog open={qrOpen} onClose={handleCloseQr} maxWidth="xs" fullWidth>
+        <DialogTitle sx={{ pr: 6 }}>
+          Quét mã để thanh toán
+          <IconButton
+            aria-label="close"
+            onClick={() => setQrOpen(false)} // nút X
+            sx={{ position: 'absolute', right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers sx={{ textAlign: 'center' }}>
+          <img
+            src={lastOrder?.qrUrl}
+            alt="QR thanh toán"
+            style={{
+              width: 'min(320px, 90%)',
+              height: 'auto',
+              borderRadius: 8,
+            }}
+          />
+          <Stack spacing={1.2} mt={2} alignItems="center">
+            <Typography>
+              Số tiền: <b>{lastOrder?.amount?.toLocaleString('vi-VN')}đ</b>
+            </Typography>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography>
+                Nội dung: <b>{lastOrder?.payment?.transferContent}</b>
+              </Typography>
+              <Tooltip title="Sao chép nội dung CK" arrow>
+                <IconButton
+                  size="small"
+                  onClick={() =>
+                    navigator.clipboard.writeText(
+                      lastOrder?.payment?.transferContent || '',
+                    )
+                  }
+                >
+                  <ContentCopyIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Stack>
+            <Typography variant="caption" color="text.secondary">
+              Vui lòng chuyển đúng số tiền & nội dung để hệ thống tự xác nhận.
+            </Typography>
+          </Stack>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button color="inherit" disabled>
+            Để sau
+          </Button>
+          <Button
+            variant="contained"
+            onClick={onConfirmPaid}
+            disabled={confirming}
+          >
+            {confirming ? 'ĐANG GỬI MAIL...' : 'Tôi đã thanh toán'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Toast */}
+      <Snackbar
+        open={toast.open}
+        autoHideDuration={3000}
+        onClose={() => setToast(t => ({ ...t, open: false }))}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert
+          onClose={() => setToast(t => ({ ...t, open: false }))}
+          severity={toast.type}
+          variant="filled"
+        >
+          {toast.msg}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
