@@ -543,7 +543,7 @@ export function HomePage({
                 { id: '2', image: evoLiteNeoImg, name: 'EVO Lite Neo' },
                 { id: '3', image: evoNeoImg, name: 'EVO Neo' },
                 // { id: '4', image: evo200LiteImg, name: 'Evo200 Lite' },
-                { id: '5', image: evo200Img, name: 'EVO 200' },
+                // { id: '5', image: evo200Img, name: 'EVO 200' },
                 { id: '6', image: evoGrandLiteImg, name: 'EVO Grand Lite' },
                 { id: '7', image: evoGrandImg, name: 'Evo Grand' },
                 { id: '8', image: felizNeoImg, name: 'Feliz Neo' },
