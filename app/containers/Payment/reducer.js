@@ -5,6 +5,7 @@
  */
 import produce from 'immer';
 import {
+  CLEAR_CONFIRM_STATUS,
   CONFIRM_PAID_FAILURE,
   CONFIRM_PAID_REQUEST,
   CONFIRM_PAID_SUCCESS,
@@ -25,6 +26,7 @@ export const initialState = {
   lastOrder: null,
   confirming: false,
   error: null,
+  confirmedOrderId: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -59,11 +61,15 @@ const paymentReducer = (state = initialState, action) =>
       case CONFIRM_PAID_SUCCESS:
         draft.confirming = false;
         if (draft.lastOrder) draft.lastOrder.status = 'paid_manual';
+        draft.confirmedOrderId = action.payload.orderId;
         return;
       case CONFIRM_PAID_FAILURE:
         draft.confirming = false;
         draft.error = action.error;
         return;
+      case CLEAR_CONFIRM_STATUS:
+        draft.confirmedOrderId = null;
+        break;
       case DEFAULT_ACTION:
         break;
     }

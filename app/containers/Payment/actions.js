@@ -4,7 +4,7 @@
  *
  */
 
-import { CONFIRM_PAID_FAILURE, CONFIRM_PAID_REQUEST, CONFIRM_PAID_SUCCESS, DEFAULT_ACTION, FETCH_DISTRICTS, FETCH_DISTRICTS_SUCCESS, FETCH_PROVINCES, FETCH_PROVINCES_SUCCESS, FETCH_WARDS, FETCH_WARDS_SUCCESS, PLACE_ORDER_FAILURE, PLACE_ORDER_REQUEST, PLACE_ORDER_SUCCESS } from './constants';
+import { CLEAR_CONFIRM_STATUS, CONFIRM_PAID_FAILURE, CONFIRM_PAID_REQUEST, CONFIRM_PAID_SUCCESS, DEFAULT_ACTION, FETCH_DISTRICTS, FETCH_DISTRICTS_SUCCESS, FETCH_PROVINCES, FETCH_PROVINCES_SUCCESS, FETCH_WARDS, FETCH_WARDS_SUCCESS, PLACE_ORDER_FAILURE, PLACE_ORDER_REQUEST, PLACE_ORDER_SUCCESS } from './constants';
 
 export function defaultAction() {
   return {
@@ -41,3 +41,5 @@ export const placeOrderFailure = error => ({ type: PLACE_ORDER_FAILURE, error })
 export const confirmPaidRequest = (payload) => ({ type: CONFIRM_PAID_REQUEST, payload });
 export const confirmPaidSuccess = (payload) => ({ type: CONFIRM_PAID_SUCCESS, payload });
 export const confirmPaidFailure = (error) => ({ type: CONFIRM_PAID_FAILURE, error });
+
+export const clearConfirmStatus = () => ({ type: CLEAR_CONFIRM_STATUS });

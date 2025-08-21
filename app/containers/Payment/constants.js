@@ -22,3 +22,5 @@ export const PLACE_ORDER_FAILURE = 'app/Payment/PLACE_ORDER_FAILURE';
 export const CONFIRM_PAID_REQUEST = 'app/Payment/CONFIRM_PAID_REQUEST';
 export const CONFIRM_PAID_SUCCESS = 'app/Payment/CONFIRM_PAID_SUCCESS';
 export const CONFIRM_PAID_FAILURE = 'app/Payment/CONFIRM_PAID_FAILURE';
+
+export const CLEAR_CONFIRM_STATUS  = 'app/Payment/CLEAR_CONFIRM_STATUS';

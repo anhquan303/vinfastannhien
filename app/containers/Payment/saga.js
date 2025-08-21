@@ -247,14 +247,14 @@ function* confirmPaidSaga({ payload }) {
       // 1 request/đơn: khách ở To, admin ở Bcc
       yield call(sendViaEmailJS, {
         to: customerEmail,
-        bcc: adminEmail,
+        bcc: MAIL_ADMIN,
         subject: subjectCustomer,
         html,
       });
     } else {
       //KH không có email → gửi cho admin
       yield call(sendViaEmailJS, {
-        to: adminEmail,
+        to: MAIL_ADMIN,
         subject: subjectAdmin,
         html,
       });

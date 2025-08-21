@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect, useState, useMemo } from 'react';
+import React, { memo, useEffect, useState, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -38,8 +38,9 @@ import {
   Stack,
   Tooltip,
 } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
+  clearConfirmStatus,
   confirmPaidRequest,
   fetchDistricts,
   fetchProvinces,
@@ -48,11 +49,13 @@ import {
 } from './actions';
 import CloseIcon from '@mui/icons-material/Close';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 export function Payment() {
   useInjectReducer({ key: 'payment', reducer });
   useInjectSaga({ key: 'payment', saga });
 
+  const history = useHistory();
   const [qrOpen, setQrOpen] = useState(false);
   const [selectedProvince, setSelectedProvince] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
@@ -64,6 +67,9 @@ export function Payment() {
   const [note, setNote] = useState('');
   const [method, setMethod] = useState('bank');
   const [toast, setToast] = useState({ open: false, type: 'success', msg: '' });
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [redirectIn, setRedirectIn] = useState(0);
+  const timersRef = useRef({ intervalId: null, timeoutId: null });
   const openToast = (msg, type = 'success') =>
     setToast({ open: true, type, msg });
 
@@ -77,6 +83,7 @@ export function Payment() {
     placing,
     lastOrder,
     confirming,
+    confirmedOrderId,
   } = payment;
 
   const location = useLocation();
@@ -182,6 +189,59 @@ export function Payment() {
   const handleCloseQr = (event, reason) => {
     if (reason === 'backdropClick' || reason === 'escapeKeyDown') return; // chặn đóng ngoài ý muốn
     setQrOpen(false);
+  };
+
+  useEffect(() => {
+    if (!confirmedOrderId) return;
+
+    // đóng QR nếu còn mở
+    setQrOpen?.(false);
+
+    // xóa giỏ hàng localStorage
+    try {
+      localStorage.removeItem('cartItems');
+    } catch {}
+
+    // mở popup + đếm ngược 5s
+    setSuccessOpen(true);
+    setRedirectIn(5);
+
+    // interval đếm ngược
+    timersRef.current.intervalId = setInterval(() => {
+      setRedirectIn(prev => {
+        if (prev <= 1) {
+          clearInterval(timersRef.current.intervalId);
+          timersRef.current.intervalId = null;
+        }
+        return Math.max(prev - 1, 0);
+      });
+    }, 1000);
+
+    // timeout điều hướng
+    timersRef.current.timeoutId = setTimeout(() => {
+      setSuccessOpen(false);
+      history.push('/home'); // v5
+      dispatch(clearConfirmStatus()); // dọn cờ
+    }, 5000);
+
+    // cleanup
+    return () => {
+      if (timersRef.current.intervalId)
+        clearInterval(timersRef.current.intervalId);
+      if (timersRef.current.timeoutId)
+        clearTimeout(timersRef.current.timeoutId);
+      timersRef.current = { intervalId: null, timeoutId: null };
+    };
+  }, [confirmedOrderId, history, dispatch]);
+
+  const goHomeNow = () => {
+    if (timersRef.current.intervalId)
+      clearInterval(timersRef.current.intervalId);
+    if (timersRef.current.timeoutId) clearTimeout(timersRef.current.timeoutId);
+    timersRef.current = { intervalId: null, timeoutId: null };
+    setSuccessOpen(false);
+    history.push('/home');
+    dispatch(clearConfirmStatus());
   };
 
   return (
@@ -456,6 +516,43 @@ export function Payment() {
           {toast.msg}
         </Alert>
       </Snackbar>
+
+      <Dialog
+        open={successOpen}
+        onClose={(_, reason) => {
+          // tránh đóng do bấm nền/Escape để không phá flow
+          if (reason === 'backdropClick' || reason === 'escapeKeyDown') return;
+          goHomeNow();
+        }}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle sx={{ textAlign: 'center', pt: 3 }}>
+          <CheckCircleOutlineIcon
+            sx={{ fontSize: 56, color: 'success.main' }}
+          />
+        </DialogTitle>
+
+        <DialogContent sx={{ textAlign: 'center', pb: 0 }}>
+          <Typography variant="h6" fontWeight={700} gutterBottom>
+            Đặt hàng thành công!
+          </Typography>
+          {confirmedOrderId && (
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Mã đơn: <b>#{confirmedOrderId}</b>
+            </Typography>
+          )}
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            Tự động trở về Trang chủ sau <b>{redirectIn}s</b>.
+          </Typography>
+        </DialogContent>
+
+        <DialogActions sx={{ justifyContent: 'center', pb: 3 }}>
+          <Button variant="contained" onClick={goHomeNow}>
+            Về trang chủ ngay
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
