@@ -89,7 +89,7 @@ export default function App() {
 
       {/* Hotline bên trái */}
       <div className="fixed-hotline">
-        <a href="tel:0988062969">Hotline: 0988062969</a>
+        <a href="tel:0988062969">Hotline: 0396959876</a>
       </div>
 
       {/* Mạng xã hội bên phải */}
