@@ -201,6 +201,58 @@ export function Products({ perPageMap }) {
                   '&:hover': { boxShadow: 3 },
                 }}
               >
+                {/* Badge -XX% góc trái */}
+                {product.hasDiscount && Number(product.discount) > 0 && (
+                  <Box
+                    aria-label={`Giảm ${product.discount}%`}
+                    sx={{
+                      position: 'absolute',
+                      top: 10,
+                      left: -6, // hơi ăn ra mép cho cảm giác ribbon
+                      zIndex: 2,
+                      px: 1.2,
+                      py: 0.5,
+                      fontSize: 14,
+                      fontWeight: 800,
+                      color: '#fff',
+                      bgcolor: 'error.main',
+                      borderRadius: '0 10px 10px 0',
+                      boxShadow: '0 8px 20px rgba(230,0,0,.35)',
+                      letterSpacing: 0.3,
+                      textTransform: 'uppercase',
+                      '&::after': {
+                        content: '""',
+                        position: 'absolute',
+                        left: 0,
+                        bottom: -6,
+                        width: 0,
+                        height: 0,
+                        borderTop: '6px solid #9b0000',
+                        borderLeft: '6px solid transparent',
+                      },
+                      animation: 'popIn .35s ease-out',
+                      '@keyframes popIn': {
+                        '0%': {
+                          transform: 'translateX(-6px) scale(.9)',
+                          opacity: 0,
+                        },
+                        '100%': {
+                          transform: 'translateX(0) scale(1)',
+                          opacity: 1,
+                        },
+                      },
+                    }}
+                  >
+                    -
+                    {Math.min(
+                      90,
+                      Math.max(1, Math.round(Number(product.discount))),
+                    )}
+                    %
+                  </Box>
+                )}
+
+                {/* Chip NEW góc phải */}
                 {product.isNew && (
                   <Chip
                     label="NEW"
@@ -210,9 +262,7 @@ export function Products({ perPageMap }) {
                       top: 10,
                       right: 10,
                       fontWeight: 'bold',
-                      '& .MuiChip-label': {
-                        fontSize: '1rem',
-                      },
+                      '& .MuiChip-label': { fontSize: '1rem' },
                       animation: 'pulseGlow 1.5s infinite',
                       '@keyframes pulseGlow': {
                         '0%': {
@@ -285,9 +335,7 @@ export function Products({ perPageMap }) {
                   sx={{
                     bgcolor: 'black',
                     color: 'white',
-                    '&:hover': {
-                      bgcolor: '#333',
-                    },
+                    '&:hover': { bgcolor: '#333' },
                   }}
                 >
                   MUA NGAY &nbsp; &gt;

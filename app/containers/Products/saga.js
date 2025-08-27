@@ -6,7 +6,7 @@ import {
   takeLatest,
   takeLeading,
 } from 'redux-saga/effects';
-import { db } from '../../firebaseConfig';
+import { authReady, db } from '../../firebaseConfig';
 import {
   fetchProductDetailFailure,
   fetchProductDetailSuccess,
@@ -21,7 +21,8 @@ import {
 } from './constants';
 
 export function* fetchProductsSaga() {
-  try {
+  try { 
+    yield call(() => authReady);  
     const snapshot = yield call([db.collection('products'), 'get']);
     const products = snapshot.docs.map(doc => ({
       id: doc.id,
@@ -29,6 +30,7 @@ export function* fetchProductsSaga() {
     }));
     yield put(fetchProductsSuccess(products));
   } catch (error) {
+    console.log('error: ', error);
     yield put(fetchProductsFailure(error.message));
   }
 }
